@@ -1,12 +1,14 @@
-import { Text, View } from "react-native";
+import { CustomButton } from "@/components/customButton";
+import { Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Welcome = () => {
-  <SafeAreaView>
-    <View>
-      <Text className="bg-black">Welcome User</Text>
-    </View>
-  </SafeAreaView>;
+  const onButtonPress = () => {};
+  return (
+    <SafeAreaView>
+      <Text className="bg-black mt-10">Welcome User</Text>
+    </SafeAreaView>
+  );
 };
 
 export default Welcome;
