@@ -6,7 +6,7 @@ An app where you can efficiently send your packages through your nearby traveler
 
 1. Fork the repo.
 2. Clone the project to your local reposetory.
-3. Make you contribution
+3. Make your contribution
 4. Make a pull request.
 
 ## How to run this App
