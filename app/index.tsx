@@ -1,7 +1,8 @@
 import { Redirect } from "expo-router";
 
 const Onboarding = () => {
-  return <Redirect href="/(root)/(tabs)/home" />;
+  return <Redirect href="/(auth)/welcome" />;
 };
+
 
 export default Onboarding;

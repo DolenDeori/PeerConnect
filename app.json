@@ -14,7 +14,12 @@
       "backgroundColor": "#2f80ed"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "splash": {
+        "image": "./assets/images/splash.png",
+        "resizeMode": "cover",
+        "backgroundColor": "#2f80ed"
+      }
     },
     "android": {
       "adaptiveIcon": {
