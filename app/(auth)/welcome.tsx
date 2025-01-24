@@ -1,16 +1,25 @@
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Swiper from "react-native-swiper";
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback, useMemo } from "react";
 import CustomButton from "@/components/customButton";
 import { onboarding } from "@/constants";
 import { router } from "expo-router";
-import Button from "@/components/button";
 
 const Welcome = () => {
   const swiperRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const isLastSlide = activeIndex === onboarding.length - 1;
+
+  const isLastSlide = useMemo(
+    () => activeIndex === onboarding.length - 1,
+    [activeIndex]
+  );
+
+  // Optimize state update for index change
+  const handleIndexChanged = useCallback((index) => {
+    setActiveIndex(index);
+  }, []);
+
   return (
     <SafeAreaView className="flex h-full items-center justify-between bg-white">
       <TouchableOpacity
@@ -23,16 +32,30 @@ const Welcome = () => {
           Skip
         </Text>
       </TouchableOpacity>
+
+      {/* Pagination Dots */}
+      <View className="absolute top-14 w-[90%] mx-auto flex-row justify-between items-center">
+        {Array.from({ length: onboarding.length }, (_, index) => {
+          const isActive = activeIndex === index;
+          return (
+            <View
+              key={index}
+              className={`h-[4px] rounded-full mx-[2px] ${
+                isActive ? "bg-[#0286FF]" : "bg-[#E2E8F0]"
+              }`}
+              style={{
+                flex: 1, // Active dot is twice as wide
+              }}
+            />
+          );
+        })}
+      </View>
+
       <Swiper
         ref={swiperRef}
         loop={false}
-        dot={
-          <View className="w-[32px] h-[4px] mx-1 bg-[#E2E8F0] rounded-full" />
-        }
-        activeDot={
-          <View className="w-[50px] h-[4px] mx-1 bg-[#0286FF] rounded-full" />
-        }
-        onIndexChanged={(index) => setActiveIndex(index)}
+        showsPagination={false}
+        onIndexChanged={handleIndexChanged}
       >
         {onboarding.map((item) => (
           <View key={item.id} className="flex items-center justify-center p-5">
@@ -50,18 +73,18 @@ const Welcome = () => {
                 resizeMode="contain"
               />
             </View>
-            <CustomButton
-              title={isLastSlide ? "Get Started" : "Next"}
-              onPress={() =>
-                isLastSlide
-                  ? router.replace("/(auth)/sign-up")
-                  : swiperRef.current?.scrollBy(1)
-              }
-              className="mt-10"
-            ></CustomButton>
           </View>
         ))}
       </Swiper>
+      <CustomButton
+        title={isLastSlide ? "Get Started" : "Next"}
+        onPress={() =>
+          isLastSlide
+            ? router.replace("/(auth)/sign-up")
+            : swiperRef.current?.scrollBy(1)
+        }
+        className="mb-8"
+      />
     </SafeAreaView>
   );
 };
