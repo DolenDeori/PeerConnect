@@ -7,6 +7,10 @@ module.exports = {
     extend: {
       fontFamily: {
         DMSansRegular: ["DMSans-Regular", "sans-serif"],
+        DMSansMedium: ["DMSans-Medium", "sans-serif"],
+        DMSansSemiBold: ["DMSans-SemiBold", "sans-serif"],
+        HostGorteskMedium: ["HostGrotesk-Medium", "sans-serif"],
+        HostGorteskBold: ["HostGrotesk-Bold", "sans-serif"],
       },
     },
   },
