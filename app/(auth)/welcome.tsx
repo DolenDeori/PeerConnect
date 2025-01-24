@@ -59,19 +59,20 @@ const Welcome = () => {
       >
         {onboarding.map((item) => (
           <View key={item.id} className="flex items-center justify-center p-5">
-            <View className="flex items-center justify-center w-full mt-10">
-              <View className="px-5 mb-5">
-                <Text className="text-black font-bold font-DMSansRegular text-4xl">
+            <Image
+              source={item.image}
+              className="w-full h-[300px] mt-16"
+              resizeMode="contain"
+            />
+            <View className="flex items-center justify-center w-full mt-16">
+              <View>
+                <Text className="text-black font-HostGorteskBold text-4xl">
                   {item.title}
                 </Text>
-                <Text className="mt-2">{item.description}</Text>
+                <Text className="mt-2 font-DMSansRegular">
+                  {item.description}
+                </Text>
               </View>
-
-              <Image
-                source={item.image}
-                className="w-full h-[300px]"
-                resizeMode="contain"
-              />
             </View>
           </View>
         ))}
