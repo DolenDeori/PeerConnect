@@ -1,10 +1,11 @@
-import { Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView, Text, View } from "react-native";
 
 const SignUp = () => {
-  <SafeAreaView className="h-full">
-    <Text>Signup Page</Text>
-  </SafeAreaView>;
+  <ScrollView className="flex-1 bg-gray-200">
+    <View>
+      <Text>Sign Up Page</Text>
+    </View>
+  </ScrollView>;
 };
 
 export default SignUp;
