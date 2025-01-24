@@ -12,14 +12,14 @@ const getBgVariantStyle = (variant: ButtonProps["bgVariant"]) => {
     case "outline":
       return "bg-transparent border-neutral-300 border-[0.5px]";
     default:
-      return "bg-[#0286ff]";
+      return "bg-blue-500";
   }
 };
 
 const getTextVariantStyle = (variant: ButtonProps["textVariant"]) => {
   switch (variant) {
     case "primary":
-      return "text-black";
+      return "text-white";
     case "secondary":
       return "text-gray-100";
     case "danger":
@@ -27,14 +27,14 @@ const getTextVariantStyle = (variant: ButtonProps["textVariant"]) => {
     case "success":
       return "text-green-100";
     default:
-      return "text-white";
+      return "text-black";
   }
 };
 
 const CustomButton = ({
   title,
   onPress,
-  bgVariant = "success",
+  bgVariant = "primary",
   textVariant = "primary",
   IconLeft,
   IconRight,
@@ -43,9 +43,9 @@ const CustomButton = ({
 }: ButtonProps) => (
   <TouchableOpacity
     onPress={onPress}
-    className={`w-full mt-5 rounded-full flex flex-row justify-center items-center p-3 shadow-md shadow-neutral-400/70 ${getBgVariantStyle(
+    className={`w-11/12 rounded-full flex flex-row justify-center items-center p-3 m-4 ${getBgVariantStyle(
       bgVariant
-    )}`}
+    )} ${className}`}
     {...props}
   >
     {IconLeft && <IconLeft />}
