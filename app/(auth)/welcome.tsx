@@ -28,9 +28,7 @@ const Welcome = () => {
           router.replace("/(auth)/sign-up");
         }}
       >
-        <Text className="text-black text-md font-DMSansRegular font-bold">
-          Skip
-        </Text>
+        <Text className="text-black text-md font-DMSansSemiBold">Skip</Text>
       </TouchableOpacity>
 
       {/* Pagination Dots */}
@@ -84,7 +82,7 @@ const Welcome = () => {
             ? router.replace("/(auth)/sign-up")
             : swiperRef.current?.scrollBy(1)
         }
-        className="mb-8"
+        className="mb-8 w-11/12"
       />
     </SafeAreaView>
   );
