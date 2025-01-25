@@ -15,9 +15,6 @@ const SignIn = () => {
     Alert.alert("Signup Successful", "Welcome to the app!");
     router.push("../(root)/(tabs)/home");
   };
-  const handleGoogleSignIn = () => {
-    Alert.alert("Google Sign-In", "This feature is under development.");
-  };
 
   return (
     <ScrollView className="flex-1 bg-white">
