@@ -1,16 +1,9 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Alert,
-  ScrollView,
-  Image,
-} from "react-native";
+import { View, Text, TouchableOpacity, Alert, ScrollView } from "react-native";
 import InputField from "@/components/inputField";
 import CustomButton from "@/components/customButton";
 import { router } from "expo-router";
-import { icons } from "@/constants";
+import OAuth from "@/components/oAuth";
 
 const SignIn = () => {
   const [userName, setUserName] = useState("");
@@ -59,27 +52,8 @@ const SignIn = () => {
         {/* Submit Button */}
         <CustomButton title="Sign In" className="mt-8" onPress={handleSignup} />
 
-        {/* OR Separator */}
-        <View className="flex-row items-center my-6">
-          <View className="flex-1 h-px bg-gray-300" />
-          <Text className="mx-4 text-gray-500 font-DMSansRegular">OR</Text>
-          <View className="flex-1 h-px bg-gray-300" />
-        </View>
-
-        {/* Google OAuth Button */}
-        <CustomButton
-          title="Sign in with Google"
-          onPress={handleGoogleSignIn}
-          bgVariant="outline"
-          textVariant=""
-          IconLeft={() => (
-            <Image
-              source={icons.google}
-              resizeMode="contain"
-              className="w-5 h-5 mx-2"
-            />
-          )}
-        />
+        {/* Google OAuth */}
+        <OAuth />
 
         {/* Login Link */}
         <View className="mt-4 mb-8 flex-row justify-center">
