@@ -1,28 +1,18 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Alert, ScrollView } from "react-native";
 import InputField from "@/components/inputField";
-import { CheckBox } from "react-native-elements";
 import CustomButton from "@/components/customButton";
 import { router } from "expo-router";
 
 const SignIn = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [isTermsAccepted, setTermsAccepted] = useState(false);
   const [error, setError] = useState("");
 
   const handleSignup = () => {
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-    if (!isTermsAccepted) {
-      setError("You must accept the terms and conditions");
-      return;
-    }
     setError("");
     Alert.alert("Signup Successful", "Welcome to the app!");
+    router.push("../(root)/(tabs)/home");
   };
 
   return (
@@ -33,10 +23,6 @@ const SignIn = () => {
           <Text className="text-4xl font-HostGorteskBold">Welcome!</Text>
           <Text className="text-4xl font-HostGorteskBold">
             Great To See You
-          </Text>
-          <Text className="text-gray-500 font-DMSansRegular">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt.
           </Text>
         </View>
 
@@ -60,7 +46,7 @@ const SignIn = () => {
         </TouchableOpacity>
 
         {/* Submit Button */}
-        <CustomButton title="Sign In" className="mt-8" />
+        <CustomButton title="Sign In" className="mt-8" onPress={handleSignup} />
 
         {/* Login Link */}
         <View className="mt-4 flex-row justify-center">
