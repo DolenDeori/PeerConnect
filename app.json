@@ -10,22 +10,28 @@
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/images/splash.png",
-      "resizeMode": "cover",
+      "resizeMode": "contain",
       "backgroundColor": "#2f80ed"
     },
     "ios": {
       "supportsTablet": true,
       "splash": {
         "image": "./assets/images/splash.png",
-        "resizeMode": "cover",
+        "resizeMode": "contain",
         "backgroundColor": "#2f80ed"
       }
     },
     "android": {
+      "splash": {
+        "image": "./assets/images/splash.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#2f80ed"
+      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.PeerConnect"
     },
     "web": {
       "bundler": "metro",
