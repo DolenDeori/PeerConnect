@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeftIcon, ChevronDownIcon } from 'react-native-heroicons/outline';
 import CustomButton from '@/components/customButton';
 import ImportantNotice from '@/components/importantNotice';
+import { dropdownOptions } from '@/constants/';
 
 // Define option types
 type DropdownOption = {
@@ -30,36 +31,7 @@ function PackageDetailsScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
-  // Dropdown options
-  const dropdownOptions = {
-    packageType: [
-      { label: 'Regular Package', value: 'regular' },
-      { label: 'Express Package', value: 'express' },
-      { label: 'Fragile Package', value: 'fragile' },
-    ],
-    packageSize: [
-      { label: 'Small (up to 30x30x30 cm)', value: 'small' },
-      { label: 'Medium (up to 50x50x50 cm)', value: 'medium' },
-      { label: 'Large (up to 100x100x100 cm)', value: 'large' },
-    ],
-    packageWeight: [
-      { label: 'Light (1-5 kg)', value: '1-5' },
-      { label: 'Medium (5-10 kg)', value: '5-10' },
-      { label: 'Heavy (10-20 kg)', value: '10-20' },
-    ],
-    packageContent: [
-      { label: 'Clothes', value: 'clothes' },
-      { label: 'Electronics', value: 'electronics' },
-      { label: 'Documents', value: 'documents' },
-      { label: 'Books', value: 'books' },
-    ],
-    waitingPeriod: [
-      { label: '1-2 days', value: '1-2' },
-      { label: '3-5 days', value: '3-5' },
-      { label: '1 week', value: '7' },
-    ],
-  };
-
+  
   // Function to handle dropdown selection
   const handleSelect = (value: string) => {
     if (!activeDropdown) return;
