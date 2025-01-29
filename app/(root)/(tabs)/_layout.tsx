@@ -1,37 +1,35 @@
-import { Stack, Tabs } from "expo-router";
-import { View } from "react-native";
-import { HomeIcon, ChartPieIcon } from "react-native-heroicons/outline";
+import { Tabs } from "expo-router";
+import { View, TouchableOpacity } from "react-native";
+import React from "react";
+import { ChartPieIcon, ChatBubbleBottomCenterTextIcon, UserCircleIcon, HandRaisedIcon } from "react-native-heroicons/outline";
+import { HomeIcon } from "react-native-heroicons/solid";
 
-const TabIcon = ({ focused }: { focused: boolean }) => (
-  <View
-    className={` rounded-full w-12 h-12 flex justify-center items-center mb-5 ${
-      focused ? "bg-general-400" : ""
-    }`}
-  >
-    <HomeIcon color={"black"} />
-  </View>
-);
+const TabIcon = ({ children, focused }: {children: React.ReactNode, focused?: boolean}) => {
+  return (
+    <View className={`flex flex-1`}>
+      {children}
+    </View>
+  );
+};
 
-const Layout = () => {
+const Layout: React.FC = () => {
   return (
     <Tabs
       initialRouteName="home"
       screenOptions={{
         tabBarActiveTintColor: "white",
         tabBarInactiveTintColor: "white",
-        tabBarShowLabel: false,
+        tabBarShowLabel: true,
+        tabBarLabelStyle: {
+          color: "black",
+          fontFamily: "HostGrotesk-Bold",
+        },
         tabBarStyle: {
-          backgroundColor: "#1E1E1E",
-          position: "absolute",
           display: "flex",
-          overflow: "hidden",
+          alignItems: "center",
+          justifyContent: "center",
+          paddingTop: 10,
           height: 66,
-          paddingTop: 23,
-          marginBottom: 20,
-          marginHorizontal: 20,
-          paddingBottom: 0,
-          paddingHorizontal: 0,
-          borderRadius: 90,
         },
       }}
     >
@@ -40,7 +38,12 @@ const Layout = () => {
         options={{
           title: "Home",
           headerShown: false,
-          tabBarIcon: ({ focused }) => <HomeIcon color={"black"} />,
+          tabBarButton: (props) => <TouchableOpacity {...props} activeOpacity={1} />,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon focused={focused}>
+              <HomeIcon color={focused ? "blue" : "black"} />
+            </TabIcon>
+          ),
         }}
       />
       <Tabs.Screen
@@ -48,7 +51,38 @@ const Layout = () => {
         options={{
           title: "Contact",
           headerShown: false,
-          tabBarIcon: ({ focused }) => <ChartPieIcon color={"black"} />,
+          tabBarButton: (props) => <TouchableOpacity {...props} activeOpacity={1} />,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon focused={focused}>
+              <ChartPieIcon color={focused ? "blue" : "black"} />
+            </TabIcon>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="chat"
+        options={{
+          title: "Chat",
+          headerShown: false,
+          tabBarButton: (props) => <TouchableOpacity {...props} activeOpacity={1} />,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon focused={focused}>
+              <ChatBubbleBottomCenterTextIcon color={focused ? "blue" : "black"} />
+            </TabIcon>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="history"
+        options={{
+          title: "History",
+          headerShown: false,
+          tabBarButton: (props) => <TouchableOpacity {...props} activeOpacity={1} />,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon focused={focused}>
+              <HandRaisedIcon color={focused ? "blue" : "black"} />
+            </TabIcon>
+          ),
         }}
       />
       <Tabs.Screen
@@ -56,7 +90,12 @@ const Layout = () => {
         options={{
           title: "Profile",
           headerShown: false,
-          tabBarIcon: ({ focused }) => <TabIcon focused={focused} />,
+          tabBarButton: (props) => <TouchableOpacity {...props} activeOpacity={1} />,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon focused={focused}>
+              <UserCircleIcon color={focused ? "blue" : "black"} />
+            </TabIcon>
+          ),
         }}
       />
     </Tabs>
