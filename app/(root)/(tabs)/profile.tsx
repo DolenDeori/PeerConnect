@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const profile = () => {
   return (
     <SafeAreaView>
-      <Text>Chat</Text>
+      <Text>Profile</Text>
     </SafeAreaView>
   );
 };
