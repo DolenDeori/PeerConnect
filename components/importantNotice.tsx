@@ -19,3 +19,4 @@ const ImportantNotice: React.FC<ImportantNoticeProps> = ({ message }) => {
 };
 
 export default ImportantNotice;
+
