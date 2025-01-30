@@ -1,4 +1,4 @@
-# Welcome to PeerConnect 🚗
+# Welcome to PeerConnect
 
 ## About Peer Connect
 
@@ -47,7 +47,7 @@ PeerConnect is a peer-to-peer (P2P) delivery system that enables users to send a
 - **Backend:** Node.js with Express (for APIs and data management)
 - **Database:** Firebase / MongoDB (for real-time tracking and storage)
 - **Maps & Location Services:** Google Maps API / OpenStreetMap
-- **Authentication:** Firebase Auth / OAuth
+- **Authentication:** Clerk Auth / OAuth
 
 ## Repository Structure
 
@@ -66,7 +66,7 @@ PeerConnect/
 │-- README.md
 ```
 
-## 🛡️ Security and Privacy
+## Security and Privacy
 
 - Secure authentication with clerk Auth/OAuth.
 - Encrypted data transmission.
