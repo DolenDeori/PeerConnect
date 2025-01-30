@@ -9,7 +9,6 @@
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/DolenDeori/PeerConnect)
 ![GitHub license](https://img.shields.io/github/license/DolenDeori/PeerConnect)
 <br>
-
 ![GitHub last commit](https://img.shields.io/github/last-commit/DolenDeori/PeerConnect)
 ![GitHub repo size](https://img.shields.io/github/repo-size/DolenDeori/PeerConnect.svg?label=Repo%20size)
 ![GitHub pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)
