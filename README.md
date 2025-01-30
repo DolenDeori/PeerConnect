@@ -3,15 +3,10 @@
   <a href="https://gitpod.io/#https://github.com/TheAlgorithms/Python">
     <img src="https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod&style=flat-square" height="20" alt="Gitpod Ready-to-Code">
   </a>
-  <a href="https://github.com/TheAlgorithms/Python/blob/master/CONTRIBUTING.md">
-    <img src="https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square" height="20" alt="Contributions Welcome">
-  </a>
   <img src="https://img.shields.io/github/repo-size/DolenDeori/PeerConnect.svg?label=Repo%20size&style=flat-square" height="20">
-
   <a href="https://gitter.im/TheAlgorithms/community">
     <img src="https://img.shields.io/badge/Chat-Gitter-ff69b4.svg?label=Chat&logo=gitter&style=flat-square" height="20" alt="Gitter chat">
   </a>
-  <!-- Second row: -->
   <a href="https://github.com/pre-commit/pre-commit">
     <img src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=flat-square" height="20" alt="pre-commit">
   </a>
