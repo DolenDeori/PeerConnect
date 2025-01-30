@@ -1,3 +1,5 @@
+![GitHub README Banner](./README_Banner.png)
+
 <div align="center">
 <h1> Welcome to PeerConnect </h1>
 
