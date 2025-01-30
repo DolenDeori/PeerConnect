@@ -1,4 +1,5 @@
-# Welcome to PeerConnect
+<div align="center">
+<h1> Welcome to PeerConnect </h1>
 
   <a href="https://gitpod.io/#https://github.com/TheAlgorithms/Python">
     <img src="https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod&style=flat-square" height="20" alt="Gitpod Ready-to-Code">
@@ -13,6 +14,7 @@
   <a href="https://github.com/psf/black">
     <img src="https://img.shields.io/static/v1?label=code%20style&message=black&color=black&style=flat-square" height="20" alt="code style: black">
   </a>
+</div>
 
 ## About Peer Connect
 
