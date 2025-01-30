@@ -1,19 +1,26 @@
 <div align="center">
 <h1> Welcome to PeerConnect </h1>
 
-  <a href="https://gitpod.io/#https://github.com/TheAlgorithms/Python">
-    <img src="https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod&style=flat-square" height="20" alt="Gitpod Ready-to-Code">
-  </a>
-  <img src="https://img.shields.io/github/repo-size/DolenDeori/PeerConnect.svg?label=Repo%20size&style=flat-square" height="20">
-  <a href="https://gitter.im/TheAlgorithms/community">
-    <img src="https://img.shields.io/badge/Chat-Gitter-ff69b4.svg?label=Chat&logo=gitter&style=flat-square" height="20" alt="Gitter chat">
-  </a>
-  <a href="https://github.com/pre-commit/pre-commit">
-    <img src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=flat-square" height="20" alt="pre-commit">
-  </a>
-  <a href="https://github.com/psf/black">
-    <img src="https://img.shields.io/static/v1?label=code%20style&message=black&color=black&style=flat-square" height="20" alt="code style: black">
-  </a>
+![GitHub Repo stars](https://img.shields.io/github/stars/your-username/PeerConnect?style=social)
+![GitHub forks](https://img.shields.io/github/forks/DolenDeori/PeerConnect?style=social)
+![GitHub issues](https://img.shields.io/github/issues/DolenDeori/PeerConnect)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/DolenDeori/PeerConnect)
+![GitHub last commit](https://img.shields.io/github/last-commit/DolenDeori/PeerConnect)
+
+<a href="https://gitpod.io/#https://github.com/TheAlgorithms/Python">
+<img src="https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod&style=flat-square" height="20" alt="Gitpod Ready-to-Code">
+</a>
+<img src="https://img.shields.io/github/repo-size/DolenDeori/PeerConnect.svg?label=Repo%20size&style=flat-square" height="20">
+<a href="https://gitter.im/TheAlgorithms/community">
+<img src="https://img.shields.io/badge/Chat-Gitter-ff69b4.svg?label=Chat&logo=gitter&style=flat-square" height="20" alt="Gitter chat">
+</a>
+<a href="https://github.com/pre-commit/pre-commit">
+<img src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=flat-square" height="20" alt="pre-commit">
+</a>
+<a href="https://github.com/psf/black">
+<img src="https://img.shields.io/static/v1?label=code%20style&message=black&color=black&style=flat-square" height="20" alt="code style: black">
+</a>
+
 </div>
 
 ## About Peer Connect
