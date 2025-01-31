@@ -197,7 +197,7 @@ function PackageDetailsScreen() {
           <CustomButton
             title="Next"
             onPress={() => {
-              console.log('Next button pressed');
+              router.push("/(root)/package-summery");
             }}
             bgVariant="secondary"
             textVariant="primary"

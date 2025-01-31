@@ -8,8 +8,12 @@ const Layout = () => {
         name="package-details" 
         options={{ 
           headerShown: false,
-          // title: "Package Details",
-          // You can add more header options here if needed
+        }} 
+      />
+      <Stack.Screen 
+        name="package-summery" 
+        options={{ 
+          headerShown: false,
         }} 
       />
     {/* </Stack> */}
