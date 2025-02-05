@@ -6,6 +6,10 @@ import { ChevronLeftIcon, ChevronDownIcon } from 'react-native-heroicons/outline
 import CustomButton from '@/components/customButton';
 import ImportantNotice from '@/components/importantNotice';
 import { dropdownOptions } from '@/constants/';
+import LocationPicker from '@/components/locationPicker';
+
+
+const GOOGLE_PLACES_API_KEY = ''; 
 
 // Define option types
 type DropdownOption = {
@@ -137,26 +141,21 @@ function PackageDetailsScreen() {
           />
 
           {/* Location Details */}
-          <CustomDropdown
-            label="Pickup Point"
-            value={pickupPoint}
-            placeholder="Choose Pickup Point"
-            dropdownKey="pickupPoint"
-          />
+<LocationPicker
+  label="Pickup Point"
+  value={pickupPoint}
+  placeholder="Choose Pickup Point"
+  onLocationSelect={setPickupPoint}
+  apiKey={GOOGLE_PLACES_API_KEY}
+/>
 
-          <CustomDropdown
-            label="Delivery Point"
-            value={deliveryPoint}
-            placeholder="Choose Delivery Point"
-            dropdownKey="deliveryPoint"
-          />
-
-          <CustomDropdown
-            label="Waiting Period"
-            value={waitingPeriod}
-            placeholder="Choose Waiting Time"
-            dropdownKey="waitingPeriod"
-          />
+<LocationPicker
+  label="Delivery Point"
+  value={deliveryPoint}
+  placeholder="Choose Delivery Point"
+  onLocationSelect={setDeliveryPoint}
+  apiKey={GOOGLE_PLACES_API_KEY}
+/>
 
           <ImportantNotice
             message="If no one pickup your package till waiting period runs out your listed package will be automatically cancelled and you have to repost again. 
@@ -164,8 +163,8 @@ function PackageDetailsScreen() {
           />
 
           {/* Receiver Details Section */}
-          <Text className="text-4xl font-bold mb-2 mt-6">Please Provide{'\n'}A Receiver's Detail</Text>
-          <Text className="text-lg text-gray-600 mb-6">
+          <Text  className="text-black font-HostGorteskBold text-4xl">Please Provide{'\n'}A Receiver's Detail</Text>
+          <Text className="text-lg text-gray-600 mb-6 font-DMSansMedium">
             We need some information about the receiver for smooth delivery.
           </Text>
 
@@ -174,7 +173,7 @@ function PackageDetailsScreen() {
           />
 
           <View className="mb-6">
-            <Text className="text-lg font-medium mb-2">Receiver's Name</Text>
+            <Text className="text-lg font-medium mb-2 font-DMSansSemiBold">Receiver's Name</Text>
             <TextInput
               className="bg-gray-100 rounded-lg p-4 text-lg"
               placeholder="Enter Name"
@@ -184,7 +183,7 @@ function PackageDetailsScreen() {
           </View>
 
           <View className="mb-6">
-            <Text className="text-lg font-medium mb-2">Receiver's Phone Number</Text>
+            <Text className="text-lg font-medium mb-2 font-DMSansSemiBold">Receiver's Phone Number</Text>
             <TextInput
               className="bg-gray-100 rounded-lg p-4 text-lg"
               placeholder="Phone Number"
@@ -199,7 +198,7 @@ function PackageDetailsScreen() {
             onPress={() => {
               console.log('Next button pressed');
             }}
-            bgVariant="secondary"
+            // bgVariant="secondary"
             textVariant="primary"
             className="mt-6 mb-8"
           />
