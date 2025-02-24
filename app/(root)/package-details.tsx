@@ -1,11 +1,22 @@
-import React, { useState } from 'react';
-import { TextInput, TouchableOpacity, ScrollView, Text, View, Modal, FlatList } from 'react-native';
-import { Stack, useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { ChevronLeftIcon, ChevronDownIcon } from 'react-native-heroicons/outline';
-import CustomButton from '@/components/customButton';
-import ImportantNotice from '@/components/importantNotice';
-import { dropdownOptions } from '@/constants/';
+import React, { useState } from "react";
+import {
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  Text,
+  View,
+  Modal,
+  FlatList,
+} from "react-native";
+import { Stack, useRouter } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  ChevronLeftIcon,
+  ChevronDownIcon,
+} from "react-native-heroicons/outline";
+import CustomButton from "@/components/customButton";
+import ImportantNotice from "@/components/importantNotice";
+import { dropdownOptions } from "@/constants/";
 
 // Define option types
 type DropdownOption = {
@@ -15,41 +26,40 @@ type DropdownOption = {
 
 function PackageDetailsScreen() {
   const router = useRouter();
-  
+
   // State for form values
-  const [packageType, setPackageType] = useState('');
-  const [packageSize, setPackageSize] = useState('');
-  const [packageWeight, setPackageWeight] = useState('');
-  const [packageContent, setPackageContent] = useState('');
-  const [pickupPoint, setPickupPoint] = useState('');
-  const [deliveryPoint, setDeliveryPoint] = useState('');
-  const [waitingPeriod, setWaitingPeriod] = useState('');
-  const [receiverName, setReceiverName] = useState('');
-  const [receiverPhone, setReceiverPhone] = useState('');
-  
+  const [packageType, setPackageType] = useState("");
+  const [packageSize, setPackageSize] = useState("");
+  const [packageWeight, setPackageWeight] = useState("");
+  const [packageContent, setPackageContent] = useState("");
+  const [pickupPoint, setPickupPoint] = useState("");
+  const [deliveryPoint, setDeliveryPoint] = useState("");
+  const [waitingPeriod, setWaitingPeriod] = useState("");
+  const [receiverName, setReceiverName] = useState("");
+  const [receiverPhone, setReceiverPhone] = useState("");
+
   // State for dropdown modal
   const [modalVisible, setModalVisible] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
-  
   // Function to handle dropdown selection
   const handleSelect = (value: string) => {
     if (!activeDropdown) return;
-    
+
     switch (activeDropdown) {
-      case 'packageType':
+      case "packageType":
         setPackageType(value);
         break;
-      case 'packageSize':
+      case "packageSize":
         setPackageSize(value);
         break;
-      case 'packageWeight':
+      case "packageWeight":
         setPackageWeight(value);
         break;
-      case 'packageContent':
+      case "packageContent":
         setPackageContent(value);
         break;
-      case 'waitingPeriod':
+      case "waitingPeriod":
         setWaitingPeriod(value);
         break;
     }
@@ -58,19 +68,21 @@ function PackageDetailsScreen() {
   };
 
   // Custom Dropdown Component
-  const CustomDropdown = ({ 
-    label, 
-    value, 
-    placeholder, 
-    dropdownKey 
-  }: { 
+  const CustomDropdown = ({
+    label,
+    value,
+    placeholder,
+    dropdownKey,
+  }: {
     label: string;
     value: string;
     placeholder: string;
     dropdownKey: string;
   }) => (
     <View className="mb-6">
-      <Text className="text-lg font-medium mb-2 font-DMSansSemiBold">{label}</Text>
+      <Text className="text-lg font-medium mb-2 font-DMSansSemiBold">
+        {label}
+      </Text>
       <TouchableOpacity
         className="flex-row items-center justify-between bg-gray-100 rounded-lg p-4"
         onPress={() => {
@@ -78,7 +90,7 @@ function PackageDetailsScreen() {
           setModalVisible(true);
         }}
       >
-        <Text className={`text-lg ${value ? 'text-black' : 'text-gray-400'}`}>
+        <Text className={`text-lg ${value ? "text-black" : "text-gray-400"}`}>
           {value || placeholder}
         </Text>
         <ChevronDownIcon size={20} color="black" />
@@ -100,13 +112,18 @@ function PackageDetailsScreen() {
 
         {/* Main Content */}
         <View className="p-4">
-          <Text className="text-black font-HostGorteskBold text-4xl">Please Provide{'\n'}The Package Details</Text>
-          <Text className="text-lg text-gray-600 mb-6 font-DMSansMedium">
-            We need some information about your package to ship it properly through a traveler.
+          <Text className="text-blue-500 font-HostGorteskBold text-3xl">
+            Please Provide{"\n"}The Package Details
+          </Text>
+          <Text className="text-lg text-gray-600 mb-6 font-DMSansRegular">
+            We need some information about your package to ship it properly
+            through a traveler.
           </Text>
 
           {/* Package Details Section */}
-          <Text className="text-xl font-semibold mb-4 font-DMSansSemiBold">Describe Your Package</Text>
+          <Text className="text-xl font-semibold mb-4 font-DMSansSemiBold">
+            Describe Your Package
+          </Text>
 
           <CustomDropdown
             label="Package Type"
@@ -158,20 +175,15 @@ function PackageDetailsScreen() {
             dropdownKey="waitingPeriod"
           />
 
-          <ImportantNotice
-            message="If no one pickup your package till waiting period runs out your listed package will be automatically cancelled and you have to repost again. 
-            Any payment made will be refunded to your original payment method."
-          />
-
           {/* Receiver Details Section */}
-          <Text className="text-4xl font-bold mb-2 mt-6">Please Provide{'\n'}A Receiver's Detail</Text>
-          <Text className="text-lg text-gray-600 mb-6">
+          <Text className="text-4xl font-HostGorteskBold mb-2 mt-6">
+            Please Provide{"\n"}A Receiver's Detail
+          </Text>
+          <Text className="text-lg text-gray-600 mb-6 font-DMSansRegular">
             We need some information about the receiver for smooth delivery.
           </Text>
 
-          <ImportantNotice
-            message="An OTP will be sent to the receiver's phone number, which must be shared with the traveler during the delivery process. Please ensure the receiver is present at the delivery point for a smooth process."
-          />
+          <ImportantNotice message="An OTP will be sent to the receiver's phone number, which must be shared with the traveler during the delivery process. Please ensure the receiver is present at the delivery point for a smooth process." />
 
           <View className="mb-6">
             <Text className="text-lg font-medium mb-2">Receiver's Name</Text>
@@ -184,7 +196,9 @@ function PackageDetailsScreen() {
           </View>
 
           <View className="mb-6">
-            <Text className="text-lg font-medium mb-2">Receiver's Phone Number</Text>
+            <Text className="text-lg font-medium mb-2">
+              Receiver's Phone Number
+            </Text>
             <TextInput
               className="bg-gray-100 rounded-lg p-4 text-lg"
               placeholder="Phone Number"
@@ -199,7 +213,6 @@ function PackageDetailsScreen() {
             onPress={() => {
               router.push("/(root)/package-summery");
             }}
-            bgVariant="secondary"
             textVariant="primary"
             className="mt-6 mb-8"
           />
@@ -220,15 +233,23 @@ function PackageDetailsScreen() {
           <View className="bg-white rounded-t-2xl p-4">
             <View className="flex-row justify-between items-center mb-4">
               <Text className="text-xl font-bold">Select Option</Text>
-              <TouchableOpacity onPress={() => {
-                setModalVisible(false);
-                setActiveDropdown(null);
-              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  setModalVisible(false);
+                  setActiveDropdown(null);
+                }}
+              >
                 <Text className="text-blue-500 text-lg">Close</Text>
               </TouchableOpacity>
             </View>
             <FlatList
-              data={activeDropdown ? dropdownOptions[activeDropdown as keyof typeof dropdownOptions] : []}
+              data={
+                activeDropdown
+                  ? dropdownOptions[
+                      activeDropdown as keyof typeof dropdownOptions
+                    ]
+                  : []
+              }
               keyExtractor={(item) => item.value}
               renderItem={({ item }) => (
                 <TouchableOpacity

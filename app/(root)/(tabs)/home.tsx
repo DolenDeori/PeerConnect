@@ -5,6 +5,7 @@ import { router } from "expo-router";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 const mapAPI = process.env.GOOGLE_PLACES_API_KEY;
+
 const Home = () => {
   const handleSendingClick = () => {
     router.push("/package-details"); // Navigate to the PackageDetailsScreen
@@ -12,46 +13,19 @@ const Home = () => {
 
   return (
     <SafeAreaView className="flex flex-1 h-full w-full bg-gray-200 items-center justify-center">
-      <GooglePlacesAutocomplete
-        fetchDetails={true}
-        debounce={200}
-        placeholder="search"
-        onPress={(data, details = null) => {
-          // 'details' is provided when fetchDetails = true
-          console.log(data, details);
-        }}
-        query={{
-          key: `${mapAPI}`,
-          language: "en",
-        }}
-        styles={{
-          textInputContainer: {
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 20,
-            marginHorizontal: 20,
-            position: "relative",
-            shadowColor: "#d4d4d4",
-          },
-          textInput: {
-            backgroundColor: "black",
-            fontSize: 16,
-            fontWeight: 600,
-            marginTop: 5,
-            width: "100%",
-            borderRadius: 200,
-          },
-          listView: {
-            backgroundColor: "white",
-            position: "relative",
-            top: 0,
-            width: "100%",
-            borderRadius: 10,
-            shadowColor: "#d4d4d4",
-            zIndex: 99,
-          },
-        }}
-      />
+      {/* <View>
+        <GooglePlacesAutocomplete
+          placeholder="Search"
+          query={{
+            key: `${mapAPI}`,
+            language: "en",
+          }}
+          textInputProps={{
+            placeholderTextColor: "gray",
+            placeholder: "Where to go",
+          }}
+        />
+      </View> */}
       <Text className="font-HostGorteskBold text-3xl">
         Welcome To Peer Connect
       </Text>
