@@ -7,32 +7,33 @@ import OAuth from "@/components/oAuth";
 import { useSignIn } from "@clerk/clerk-expo";
 
 const SignIn = () => {
-  const [error, setError] = useState("");
   const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
 
-  const [emailAddress, setEmailAddress] = useState("");
-  const [password, setPassword] = useState("");
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
 
   // Handle the sign in logic for the application.
   const onSignInPress = React.useCallback(async () => {
     if (!isLoaded) return;
     try {
       const signInAttempt = await signIn.create({
-        identifier: emailAddress,
-        password,
+        identifier: form.email,
+        password: form.password,
       });
 
       if (signInAttempt.status === "complete") {
         await setActive({ session: signInAttempt.createdSessionId });
         router.replace("/(root)/(tabs)/home");
       } else {
-        console.error(JSON.stringify(error, null, 2));
+        console.error(JSON.stringify(signInAttempt, null, 2));
       }
     } catch (error) {
-      console.error(JSON.stringify(error, null, 2));
+      Alert.alert("Error", error.errors[0].longMessage);
     }
-  }, [isLoaded, emailAddress, password]);
+  }, [isLoaded, form.email, form.password]);
 
   return (
     <ScrollView className="flex-1 bg-white">
@@ -49,15 +50,15 @@ const SignIn = () => {
         <View>
           <InputField
             placeholder="Email Address"
-            value={emailAddress}
-            onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
+            value={form.email}
+            onChangeText={(value) => setForm({ ...form, email: value })}
           />
 
           <InputField
             placeholder="Password"
-            value={password}
+            value={form.password}
             secureTextEntry={true}
-            onChangeText={(password) => setPassword(password)}
+            onChangeText={(value) => setForm({ ...form, password: value })}
             isPassword
           />
         </View>

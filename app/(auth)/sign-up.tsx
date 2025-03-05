@@ -20,22 +20,23 @@ import { images } from "@/constants";
 
 const SignUp = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
-  const router = useRouter();
 
-  const [emailAddress, setEmailAddress] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-  const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [error, setError] = React.useState("");
-  const [pendingVerification, setPendingVerification] =
-    React.useState<boolean>(false);
-  const [showSuccessModal, setShowSuccessModal] = React.useState(false);
-  const [code, setCode] = useState("");
   const [verification, setVerification] = useState({
     state: "default",
     error: "",
     code: "",
   });
+  const [showSuccessModal, setShowSuccessModal] = React.useState(false);
+
+  const [error, setError] = React.useState("");
+  const [pendingVerification, setPendingVerification] =
+    React.useState<boolean>(false);
 
   // Handle signup logic for the application
   const onSignUpPress = async () => {
@@ -43,8 +44,8 @@ const SignUp = () => {
 
     try {
       await signUp.create({
-        emailAddress,
-        password,
+        emailAddress: form.email,
+        password: form.password,
       });
 
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
@@ -54,11 +55,11 @@ const SignUp = () => {
         state: "pending",
       });
     } catch (error) {
-      console.log(JSON.stringify(error, null, 2));
-      Alert.alert("Error", JSON.stringify(error, null, 2));
+      Alert.alert("Error", error.errors[0].longMessage);
     }
   };
 
+  // Handle submission of verification form
   const onVerifyPress = async () => {
     if (!isLoaded) return;
 
@@ -71,11 +72,14 @@ const SignUp = () => {
         await fetchAPI("/(api)/user", {
           method: "POST",
           body: JSON.stringify({
-            email: emailAddress,
+            name: form.name,
+            email: form.email,
             clerkId: signUpAttempt.createdUserId,
           }),
         });
+
         await setActive({ session: signUpAttempt.createdSessionId });
+
         setVerification({ ...verification, state: "success" });
       } else {
         setVerification({
@@ -87,7 +91,7 @@ const SignUp = () => {
     } catch (error) {
       setVerification({
         ...verification,
-        error: JSON.stringify(error, null, 2),
+        error: error.errors[0].longMessage,
         state: "failed",
       });
     }
@@ -111,31 +115,28 @@ const SignUp = () => {
           {/* --------------- Form Fields ------------------------ */}
           <View className="mt-8">
             <InputField
-              placeholder="Email"
-              value={emailAddress}
-              onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
+              placeholder="Enter your name"
+              value={form.name}
+              onChangeText={(value) => setForm({ ...form, name: value })}
               error={error}
             />
             <InputField
               placeholder="Create Password"
-              value={password}
-              onChangeText={(password) => setPassword(password)}
-              isPassword
+              value={form.email}
+              onChangeText={(value) => setForm({ ...form, email: value })}
               error={error}
             />
             <InputField
               placeholder="Confirm Password"
-              value={confirmPassword}
-              onChangeText={(confirmPassword) =>
-                setConfirmPassword(confirmPassword)
-              }
+              value={form.password}
+              onChangeText={(value) => setForm({...form, password: value})}
               isPassword
               error={error}
             />
           </View>
 
           {/* Submit Button */}
-          <CustomButton title="Next" onPress={onSignUpPress} className="mt-4" />
+          <CustomButton title="Sign Up" onPress={onSignUpPress} className="mt-4" />
 
           {/* Google OAuth */}
           <OAuth />
@@ -180,7 +181,7 @@ const SignUp = () => {
               Verification
             </Text>
             <Text className="font-Jakarta mb-5">
-              We've sent a verification code to {emailAddress}
+              We've sent a verification code to {form.email}
             </Text>
             <InputField
               label="code"
