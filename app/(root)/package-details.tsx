@@ -113,7 +113,7 @@ function PackageDetailsScreen() {
         {/* Main Content */}
         <View className="p-4">
           <Text className="text-blue-500 font-HostGorteskBold text-3xl">
-            Please Provide{"\n"}The Package Details
+            Describe Your Package
           </Text>
           <Text className="text-lg text-gray-600 mb-6 font-DMSansRegular">
             We need some information about your package to ship it properly
@@ -121,10 +121,6 @@ function PackageDetailsScreen() {
           </Text>
 
           {/* Package Details Section */}
-          <Text className="text-xl font-semibold mb-4 font-DMSansSemiBold">
-            Describe Your Package
-          </Text>
-
           <CustomDropdown
             label="Package Type"
             value={packageType}

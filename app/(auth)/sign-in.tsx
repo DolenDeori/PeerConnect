@@ -4,17 +4,30 @@ import InputField from "@/components/inputField";
 import CustomButton from "@/components/customButton";
 import { router } from "expo-router";
 import OAuth from "@/components/oAuth";
+import { FIREBASE_AUTH } from "@/FirebaseConfig";
 
 const SignIn = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const auth = FIREBASE_AUTH;
 
-  const handleSignup = () => {
-    setError("");
-    Alert.alert("Signup Successful", "Welcome to the app!");
-    router.push("../(root)/(tabs)/home");
-  };
+  // const handleSignup = () => {
+  //   auth.s
+  // };
+  // auth
+  //   .signInWithEmailAndPassword(userName, password)
+  //   .then((userCredential) => {
+  //     // Signed in
+  //     const user = userCredential.user;
+  //     console.log(user);
+  //     router.push("/(root)/home");
+  //   })
+  //   .catch((error) => {
+  //     const errorMessage = error.message;
+  //     console.log(errorMessage);
+  //     setError(errorMessage))
+  // }  };
 
   return (
     <ScrollView className="flex-1 bg-white">
