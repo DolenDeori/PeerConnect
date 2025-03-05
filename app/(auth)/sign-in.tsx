@@ -2,33 +2,37 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Alert, ScrollView } from "react-native";
 import InputField from "@/components/inputField";
 import CustomButton from "@/components/customButton";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import OAuth from "@/components/oAuth";
-import { FIREBASE_AUTH } from "@/FirebaseConfig";
+import { useSignIn } from "@clerk/clerk-expo";
 
 const SignIn = () => {
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const auth = FIREBASE_AUTH;
+  const { signIn, setActive, isLoaded } = useSignIn();
+  const router = useRouter();
 
-  // const handleSignup = () => {
-  //   auth.s
-  // };
-  // auth
-  //   .signInWithEmailAndPassword(userName, password)
-  //   .then((userCredential) => {
-  //     // Signed in
-  //     const user = userCredential.user;
-  //     console.log(user);
-  //     router.push("/(root)/home");
-  //   })
-  //   .catch((error) => {
-  //     const errorMessage = error.message;
-  //     console.log(errorMessage);
-  //     setError(errorMessage))
-  // }  };
+  const [emailAddress, setEmailAddress] = useState("");
+  const [password, setPassword] = useState("");
 
+  // Handle the sign in logic for the application.
+  const onSignInPress = React.useCallback(async () => {
+    if (!isLoaded) return;
+    try {
+      const signInAttempt = await signIn.create({
+        identifier: emailAddress,
+        password,
+      });
+
+      if (signInAttempt.status === "complete") {
+        await setActive({ session: signInAttempt.createdSessionId });
+        router.replace("/(root)/(tabs)/home");
+      } else {
+        console.error(JSON.stringify(error, null, 2));
+      }
+    } catch (error) {
+      console.error(JSON.stringify(error, null, 2));
+    }
+  }, [isLoaded, emailAddress, password]);
   return (
     <ScrollView className="flex-1 bg-white">
       <View className="flex-1 px-6 py-8 bg-white">
@@ -40,17 +44,19 @@ const SignIn = () => {
           </Text>
         </View>
 
-        {/* Form Fields */}
+        {/* -------------- Form Fields ---------------- */}
         <View>
           <InputField
-            placeholder="User Name"
-            value={userName}
-            onChangeText={setUserName}
+            placeholder="Email Address"
+            value={emailAddress}
+            onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
           />
+
           <InputField
             placeholder="Password"
             value={password}
-            onChangeText={setPassword}
+            secureTextEntry={true}
+            onChangeText={(password) => setPassword(password)}
             isPassword
           />
         </View>
@@ -60,7 +66,11 @@ const SignIn = () => {
         </TouchableOpacity>
 
         {/* Submit Button */}
-        <CustomButton title="Sign In" className="mt-8" onPress={handleSignup} />
+        <CustomButton
+          title="Sign In"
+          className="mt-8"
+          onPress={onSignInPress}
+        />
 
         {/* Google OAuth */}
         <OAuth />
