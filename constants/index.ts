@@ -3,16 +3,22 @@ import onboarding1 from "@/assets/images/onboarding1.png";
 import onboarding2 from "@/assets/images/onboarding2.png";
 import onboarding3 from "@/assets/images/onboarding3.png";
 import google from "@/assets/icons/google.png";
+import check from "@/assets/icons/check.png";
+import lock from "@/assets/icons/lock.png";
+import dp from "@/assets/icons/dp.jpg";
 
 export const images = {
   splash,
   onboarding1,
   onboarding2,
   onboarding3,
+  check,
+  lock,
 };
 
 export const icons = {
   google,
+  dp,
 };
 
 export const onboarding = [
@@ -37,40 +43,38 @@ export const onboarding = [
       "Enter your destination, sit back, and let us take care of the rest.",
     image: images.onboarding3,
   },
-
 ];
 
 export const data = {
   onboarding,
 };
 
-
 // Dropdown options
 export const dropdownOptions = {
   packageType: [
-    { label: 'Regular Package', value: 'regular' },
-    { label: 'Express Package', value: 'express' },
-    { label: 'Fragile Package', value: 'fragile' },
+    { label: "Regular Package", value: "regular" },
+    { label: "Express Package", value: "express" },
+    { label: "Fragile Package", value: "fragile" },
   ],
   packageSize: [
-    { label: 'Small (up to 30x30x30 cm)', value: 'small' },
-    { label: 'Medium (up to 50x50x50 cm)', value: 'medium' },
-    { label: 'Large (up to 100x100x100 cm)', value: 'large' },
+    { label: "Small (up to 30x30x30 cm)", value: "small" },
+    { label: "Medium (up to 50x50x50 cm)", value: "medium" },
+    { label: "Large (up to 100x100x100 cm)", value: "large" },
   ],
   packageWeight: [
-    { label: 'Light (1-5 kg)', value: '1-5' },
-    { label: 'Medium (5-10 kg)', value: '5-10' },
-    { label: 'Heavy (10-20 kg)', value: '10-20' },
+    { label: "Light (1-5 kg)", value: "1-5" },
+    { label: "Medium (5-10 kg)", value: "5-10" },
+    { label: "Heavy (10-20 kg)", value: "10-20" },
   ],
   packageContent: [
-    { label: 'Clothes', value: 'clothes' },
-    { label: 'Electronics', value: 'electronics' },
-    { label: 'Documents', value: 'documents' },
-    { label: 'Books', value: 'books' },
+    { label: "Clothes", value: "clothes" },
+    { label: "Electronics", value: "electronics" },
+    { label: "Documents", value: "documents" },
+    { label: "Books", value: "books" },
   ],
   waitingPeriod: [
-    { label: '1-2 days', value: '1-2' },
-    { label: '3-5 days', value: '3-5' },
-    { label: '1 week', value: '7' },
+    { label: "1-2 days", value: "1-2" },
+    { label: "3-5 days", value: "3-5" },
+    { label: "1 week", value: "7" },
   ],
 };
