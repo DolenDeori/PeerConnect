@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import InputField from "@/components/inputField";
 import CustomButton from "@/components/customButton";
-import { router, useRouter } from "expo-router";
+import { router } from "expo-router";
 import OAuth from "@/components/oAuth";
 import { useSignUp } from "@clerk/clerk-expo";
 import { fetchAPI } from "@/lib/fetch";
@@ -121,22 +121,26 @@ const SignUp = () => {
               error={error}
             />
             <InputField
-              placeholder="Create Password"
+              placeholder="Enter your email"
               value={form.email}
               onChangeText={(value) => setForm({ ...form, email: value })}
               error={error}
             />
             <InputField
-              placeholder="Confirm Password"
+              placeholder="Create Password"
               value={form.password}
-              onChangeText={(value) => setForm({...form, password: value})}
+              onChangeText={(value) => setForm({ ...form, password: value })}
               isPassword
               error={error}
             />
           </View>
 
           {/* Submit Button */}
-          <CustomButton title="Sign Up" onPress={onSignUpPress} className="mt-4" />
+          <CustomButton
+            title="Sign Up"
+            onPress={onSignUpPress}
+            className="mt-4"
+          />
 
           {/* Google OAuth */}
           <OAuth />
