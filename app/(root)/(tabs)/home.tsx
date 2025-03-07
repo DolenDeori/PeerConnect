@@ -13,13 +13,9 @@ const Home = () => {
   const loading = false;
   const [hasPermissions, setHasPermissions] = useState(false);
 
-  const handleSendingClick = () => {
-    router.push("/package-details");
-  };
-
   return (
     <SafeAreaView className="flex flex-1 h-full w-full bg-gray-200 items-center justify-center">
-      <Text className="font-HostGorteskBold text-3xl">
+      <Text className="font-HostGorteskBold text-2xl text-center px-8">
         Welcome{" "}
         {user?.firstName || user?.emailAddresses[0].emailAddress.split("@")[0]}{" "}
         To Peer Connect
@@ -28,12 +24,12 @@ const Home = () => {
         <CustomButton
           title={`I am Traveling`}
           className="mt-5 flex-1"
-          onPress={() => {}}
+          onPress={() => router.push("/travellerForm")}
         />
         <CustomButton
           title={`I am Sending`}
           className="mt-5 flex-1"
-          onPress={handleSendingClick}
+          onPress={() => router.push("/(root)/(sender)/packageDetailForm")}
           bgVariant="success"
         />
       </View>
