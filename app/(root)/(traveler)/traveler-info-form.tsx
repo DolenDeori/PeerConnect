@@ -5,10 +5,9 @@ import { ChevronLeftIcon } from "react-native-heroicons/outline";
 import { router } from "expo-router";
 import { useState } from "react";
 import CustomButton from "@/components/customButton";
-import CustomInput from "@/components/customInput";
 import InputField from "@/components/inputField";
 
-const travellerForm = () => {
+const travelerInfoForm = () => {
   const [travelMedium, setTravelMedium] = useState("bus");
   return (
     <SafeAreaView className="flex-1">
@@ -85,4 +84,4 @@ const travellerForm = () => {
   );
 };
 
-export default travellerForm;
+export default travelerInfoForm;
