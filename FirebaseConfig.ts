@@ -3,13 +3,11 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const FIREBASE_API = process.env.FIRBASE_API_KEY;
+
 const firebaseConfig = {
-  apiKey: "AIzaSyCR4EyAH_2u3xIvaD8WeIZ3hZoexwZqpyw",
+  apiKey: FIREBASE_API,
   authDomain: "peerconnect-2024.firebaseapp.com",
   projectId: "peerconnect-2024",
   storageBucket: "peerconnect-2024.firebasestorage.app",
