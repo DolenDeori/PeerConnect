@@ -19,3 +19,8 @@ declare interface InputFieldProps extends TextInputProps {
   labelClassName?: string;
   errorClassName?: string;
 }
+
+declare interface InfoCardProps {
+  message: string;
+  bgVarient?: "primary" | "secondary" | "danger" | "outline" | "success";
+}

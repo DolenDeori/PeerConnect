@@ -1,27 +1,27 @@
-import React from 'react';
-import { TouchableOpacity, Text, View } from 'react-native';
-import { ChevronDownIcon } from 'react-native-heroicons/outline';
-import InputField from '@/components/inputField'; // Import your InputField component
+import React from "react";
+import { TouchableOpacity, Text, View } from "react-native";
+import { ChevronDownIcon } from "react-native-heroicons/outline";
+import InputField from "@/components/inputField"; // Import your InputField component
 
 interface CustomInputProps {
   label: string;
   placeholder: string;
-  value: string;
-  onChangeText: (text: string) => void;
-  onPress: () => void;
+  value?: string;
+  onChangeText?: (text: string) => void;
+  onPress?: () => void;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
   label,
   placeholder,
-  value,
-  onChangeText,
-  onPress,
+  value = "",
+  onChangeText = () => {},
+  onPress = () => {},
 }) => {
   return (
     <View className="mb-4">
       <Text className="text-lg mb-2">{label}</Text>
-      
+
       {/* Use InputField for standard text input */}
       <InputField
         label={label}
