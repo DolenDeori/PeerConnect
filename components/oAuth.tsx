@@ -20,7 +20,6 @@ const OAuth = () => {
         title="Sign in with Google"
         onPress={handleGoogleSignIn}
         bgVariant="outline"
-        textVariant=""
         IconLeft={() => (
           <Image
             source={icons.google}
