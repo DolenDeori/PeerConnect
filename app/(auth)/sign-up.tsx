@@ -5,8 +5,6 @@ import {
   TouchableOpacity,
   Alert,
   ScrollView,
-  TextInput,
-  Button,
   Image,
 } from "react-native";
 import InputField from "@/components/inputField";
@@ -19,24 +17,21 @@ import ReactNativeModal from "react-native-modal";
 import { images } from "@/constants";
 
 const SignUp = () => {
+  // Hooks --------------------
   const { isLoaded, signUp, setActive } = useSignUp();
-
-  const [form, setForm] = useState({
+  const [form, setForm] = React.useState({
     name: "",
     email: "",
     password: "",
+    confirm_password: "",
   });
-
-  const [verification, setVerification] = useState({
+  const [verification, setVerification] = React.useState({
     state: "default",
     error: "",
     code: "",
   });
   const [showSuccessModal, setShowSuccessModal] = React.useState(false);
-
   const [error, setError] = React.useState("");
-  const [pendingVerification, setPendingVerification] =
-    React.useState<boolean>(false);
 
   // Handle signup logic for the application
   const onSignUpPress = async () => {
@@ -54,8 +49,8 @@ const SignUp = () => {
         ...verification,
         state: "pending",
       });
-    } catch (error) {
-      Alert.alert("Error", error.errors[0].longMessage);
+    } catch (err) {
+      Alert.alert("Error", err.errors[0].longMessage);
     }
   };
 
@@ -88,10 +83,10 @@ const SignUp = () => {
           state: "failed",
         });
       }
-    } catch (error) {
+    } catch (err) {
       setVerification({
         ...verification,
-        error: error.errors[0].longMessage,
+        error: err.errors[0].longMessage,
         state: "failed",
       });
     }
@@ -105,28 +100,28 @@ const SignUp = () => {
           <View>
             <Text className="text-4xl font-HostGorteskBold">Welcome!</Text>
             <Text className="text-4xl font-HostGorteskBold">
-              Just Few Steps to
-            </Text>
-            <Text className="text-4xl font-HostGorteskBold mb-2">
-              Setup Your Account
+              Create your account
             </Text>
           </View>
 
           {/* --------------- Form Fields ------------------------ */}
           <View className="mt-8">
             <InputField
-              placeholder="Enter your name"
+              label="Full Name"
+              placeholder="Enter your full name"
               value={form.name}
               onChangeText={(value) => setForm({ ...form, name: value })}
               error={error}
             />
             <InputField
+              label="Email"
               placeholder="Enter your email"
               value={form.email}
               onChangeText={(value) => setForm({ ...form, email: value })}
               error={error}
             />
             <InputField
+              label="Password"
               placeholder="Create Password"
               value={form.password}
               onChangeText={(value) => setForm({ ...form, password: value })}
@@ -135,7 +130,7 @@ const SignUp = () => {
             />
           </View>
 
-          {/* Submit Button */}
+          {/* Form Submit Button */}
           <CustomButton
             title="Sign Up"
             onPress={onSignUpPress}
