@@ -2,13 +2,14 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { useTheme } from "@react-navigation/native";
 import Feather from "react-native-vector-icons/Feather";
-import CustomInput from "@/components/customInput";
+// import CustomInput from "@/components/customInput";
 import { icons } from "@/constants";
 import { useUser } from "@clerk/clerk-expo";
 import CustomButton from "@/components/customButton";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuth } from "@clerk/clerk-expo";
 import { router } from "expo-router";
+import InputField from "@/components/inputField";
 
 const profile = () => {
   const { colors } = useTheme();
@@ -46,18 +47,18 @@ const profile = () => {
 
         {/* Input Fields */}
         <View className="my-4 space-y-4">
-          <CustomInput
+          <InputField
             label="Your Email"
             placeholder={`${
               user?.emailAddresses[0].emailAddress || "user@gmail.com"
             }`}
           />
-          <CustomInput
+          <InputField
             label="Phone Number"
             placeholder={`No Phone Number`}
             value=""
           />
-          <CustomInput label="Password" placeholder="*******" />
+          <InputField label="Password" placeholder="*******" />
         </View>
 
         {/* Logout Button */}

@@ -1,31 +1,42 @@
 import CustomButton from "@/components/customButton";
-import { Text, View } from "react-native";
+import {
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { useUser } from "@clerk/clerk-expo";
+import { Menu, X } from "lucide-react-native";
+import { useState } from "react";
 
 const Home = () => {
   const { user } = useUser();
+  const [showMenu, setShowMenu] = useState<boolean>(false);
 
+  if (showMenu) {
+    return (
+      <>
+        <TouchableWithoutFeedback onPress={() => setShowMenu(false)}>
+          <View className="bg-black opacity-35 h-full w-full z-1111"></View>
+        </TouchableWithoutFeedback>
+        <View className="h-full bg-white w-2/3 absolute">
+          <View className="flex justify-end items-end p-2">
+            <TouchableOpacity onPress={() => setShowMenu(false)}>
+              <X color={"black"} />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </>
+    );
+  }
   return (
-    <SafeAreaView className="flex flex-1 h-full w-full bg-gray-200 items-center justify-center">
-      <Text className="font-HostGorteskBold text-2xl text-center px-8">
-        Welcome{" "}
-        {user?.firstName || user?.emailAddresses[0].emailAddress.split("@")[0]}{" "}
-        To Peer Connect
-      </Text>
-      <View className="flex flex-row gap-4 mx-8">
-        <CustomButton
-          title={`I am Traveling`}
-          className="mt-5 flex-1"
-          onPress={() => router.push("/(root)/(traveler)/traveler-info-form")}
-        />
-        <CustomButton
-          title={`I am Sending`}
-          className="mt-5 flex-1"
-          onPress={() => router.push("/(root)/(sender)/package-info-form")}
-          bgVariant="success"
-        />
+    <SafeAreaView className="flex-1 bg-white">
+      <View className="bg-gray-100 p-4">
+        <TouchableOpacity onPress={() => setShowMenu(!showMenu)}>
+          <Menu color={"black"} />
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
