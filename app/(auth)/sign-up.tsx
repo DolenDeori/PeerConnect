@@ -245,10 +245,10 @@ const SignUp = () => {
               Your account has been verified successfully
             </Text>
             <CustomButton
-              title="Browse Home"
+              title="Next"
               onPress={() => {
                 setShowSuccessModal(false);
-                router.push("/(root)/(tabs)/home");
+                router.replace("/(auth)/extra-info");
               }}
               className="mt-5"
             />
