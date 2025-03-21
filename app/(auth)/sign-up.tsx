@@ -59,6 +59,7 @@ const SignUp = () => {
     }
 
     try {
+      
       await signUp.create({
         emailAddress: form.email,
         password: form.password,

@@ -23,7 +23,7 @@ const Onboarding = () => {
   return (
     <SafeAreaView className="flex h-full items-center justify-between bg-white">
       <TouchableOpacity
-        className="w-full flex justify-end items-end p-3 px-5"
+        className="w-full flex justify-end items-end p-3 px-4"
         onPress={() => {
           router.replace("/(auth)/welcome-auth");
         }}
@@ -32,7 +32,7 @@ const Onboarding = () => {
       </TouchableOpacity>
 
       {/* Pagination Dots */}
-      <View className="absolute top-14 w-[90%] mx-auto flex-row justify-between items-center">
+      <View className="absolute top-14 w-[95%] mx-auto flex-row justify-between items-center">
         {Array.from({ length: onboarding.length }, (_, index) => {
           const isActive = activeIndex === index;
           return (
@@ -56,13 +56,13 @@ const Onboarding = () => {
         onIndexChanged={handleIndexChanged}
       >
         {onboarding.map((item) => (
-          <View key={item.id} className="flex items-center justify-center p-5">
+          <View key={item.id}>
             <Image
               source={item.image}
-              className="w-full h-[300px] mt-16"
+              className="w-full h-[300px] mt-16 items-center justify-center px-4"
               resizeMode="contain"
             />
-            <View className="flex items-center justify-center w-full mt-16">
+            <View className="mt-10 px-4">
               <View>
                 <Text className="text-black font-HostGorteskBold text-4xl">
                   {item.title}
@@ -75,16 +75,16 @@ const Onboarding = () => {
           </View>
         ))}
       </Swiper>
-
-      <CustomButton
-        title={isLastSlide ? "Get Started" : "Next"}
-        onPress={() =>
-          isLastSlide
-            ? router.replace("/(auth)/welcome-auth")
-            : swiperRef.current?.scrollBy(1)
-        }
-        className="mb-8 w-11/12"
-      />
+      <View className="mb-8 w-full px-4">
+        <CustomButton
+          title={isLastSlide ? "Get Started" : "Next"}
+          onPress={() =>
+            isLastSlide
+              ? router.replace("/(auth)/welcome-auth")
+              : swiperRef.current?.scrollBy(1)
+          }
+        />
+      </View>
     </SafeAreaView>
   );
 };

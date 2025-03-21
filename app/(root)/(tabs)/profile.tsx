@@ -1,14 +1,33 @@
-import { View, Text, Alert } from "react-native";
+import {
+  View,
+  Text,
+  Alert,
+  ActivityIndicator,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
-import { useUser } from "@clerk/clerk-expo";
+import { useAuth, useUser } from "@clerk/clerk-expo";
+import CustomButton from "@/components/customButton";
+import { router } from "expo-router";
+import { ArrowLeft, ChevronLeft, Settings, UserCog } from "lucide-react-native";
 
 const profile = () => {
   const { user } = useUser();
   const [userData, setUserData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const { signOut } = useAuth();
+  const onSginOutPress = async () => {
+    try {
+      await signOut();
+      router.replace("/(auth)/sign-in"); // Navigate to SignIn screen after logout
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -37,46 +56,54 @@ const profile = () => {
     };
 
     fetchUserData();
-  }, [user]);
+  }, []);
 
-  if (!userData) {
+  if (loading) {
     return (
-      <SafeAreaView className="flex-1 justify-center items-center">
-        <Text>No user data available</Text>
+      <SafeAreaView className="flex-1 justify-center items-center bg-white">
+        <ActivityIndicator size="large" color="#0000ff" />
       </SafeAreaView>
     );
   }
-
   return (
-    <SafeAreaView className="flex-1 p-4">
-      <Text className="text-3xl font-bold mb-6 text-center">User Profile</Text>
-
-      <View className="mb-4">
-        <Text className="text-lg font-semibold">Full Name:</Text>
-        <Text className="text-lg text-gray-600">{userData.fullName}</Text>
-      </View>
-
-      <View className="mb-4">
-        <Text className="text-lg font-semibold">Username:</Text>
-        <Text className="text-lg text-gray-600">{userData.userName}</Text>
-      </View>
-
-      <View className="mb-4">
-        <Text className="text-lg font-semibold">First Name:</Text>
-        <Text className="text-lg text-gray-600">{userData.firstName}</Text>
-      </View>
-
-      <View className="mb-4">
-        <Text className="text-lg font-semibold">Last Name:</Text>
-        <Text className="text-lg text-gray-600">{userData.lastName}</Text>
-      </View>
-
-      <View className="mb-4">
-        <Text className="text-lg font-semibold">Phone Number:</Text>
-        <Text className="text-lg text-gray-600">{userData.phoneNumber}</Text>
-      </View>
+    <SafeAreaView className="flex-1 bg-white p-4">
+      <TouchableWithoutFeedback
+        onPress={() => router.push("/(root)/(tabs)/home")}
+      >
+        <View className="flex-row items-center gap-4">
+          <ArrowLeft color={"black"} />
+          <Text className="font-DMSansMedium">Profile</Text>
+        </View>
+      </TouchableWithoutFeedback>
 
       {/* Add additional fields as needed */}
+      <View className="py-6 px-2">
+        <View>
+          <Text className="font-DMSansMedium">Hello,</Text>
+          <Text className="font-HostGorteskBold text-xl">
+            {userData.fullName}
+          </Text>
+        </View>
+        <View className="gap-6 mt-6 border-b border-gray-200">
+          <View>
+            <Text className="font-HostGorteskMedium">My Earning</Text>
+            {userData.earning ? (
+              <View></View>
+            ) : (
+              <View className="bg-blue-50 h-20 justify-center items-center mt-2 rounded-xl">
+                <Text className="text-gray-400">Travell to start earning</Text>
+              </View>
+            )}
+          </View>
+          <TouchableOpacity
+            className="flex-row items-center gap-4 py-4 mb-4"
+            onPress={() => router.push("/(root)/account-settings")}
+          >
+            <UserCog color={"black"} />
+            <Text className="font-DMSansMedium">Account Settings</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </SafeAreaView>
   );
 };

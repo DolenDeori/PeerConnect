@@ -1,18 +1,25 @@
-// utils.ts
+export function timeAgo(date: Date | string): string {
+  const past = new Date(date);
+  const now = new Date();
+  const seconds = Math.floor((now.getTime() - past.getTime()) / 1000);
 
-// Generates a 6-digit random verification code.
-export const generateCode = (): string => {
-  return Math.floor(100000 + Math.random() * 900000).toString();
-};
+  if (seconds < 60) return `${seconds} sec${seconds !== 1 ? "s" : ""} ago`;
 
-// Stub function to simulate sending a verification email.
-// Replace this with your actual implementation using Firebase Cloud Functions or a third-party service.
-export const sendVerificationEmail = async (
-  email: string,
-  code: string
-): Promise<void> => {
-  // For demonstration purposes, log the code.
-  console.log(`Sending verification code ${code} to email ${email}`);
-  // Simulate asynchronous email sending.
-  return Promise.resolve();
-};
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes} min${minutes !== 1 ? "s" : ""} ago`;
+
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} hr${hours !== 1 ? "s" : ""} ago`;
+
+  const days = Math.floor(hours / 24);
+  if (days < 7) return `${days} day${days !== 1 ? "s" : ""} ago`;
+
+  const weeks = Math.floor(days / 7);
+  if (weeks < 4) return `${weeks} week${weeks !== 1 ? "s" : ""} ago`;
+
+  const months = Math.floor(days / 30);
+  if (months < 12) return `${months} month${months !== 1 ? "s" : ""} ago`;
+
+  const years = Math.floor(days / 365);
+  return `${years} year${years !== 1 ? "s" : ""} ago`;
+}
