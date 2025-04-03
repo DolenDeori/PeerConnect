@@ -5,6 +5,8 @@ import check from "@/assets/images/check.png";
 import icon from "@/assets/images/icon.png";
 
 import google_icon from "@/assets/icons/google.png";
+import avatar_1 from "@/assets/images/profile_image_1.png";
+import avatar_2 from "@/assets/images/profile_image_2.png";
 // import lock from "@/assets/icons/lock.png";
 
 export const icons = {
@@ -18,6 +20,8 @@ export const images = {
   onboarding3,
   icon,
   check,
+  avatar_1,
+  avatar_2,
 };
 
 export const onboarding = [
