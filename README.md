@@ -1,50 +1,89 @@
-# Welcome to your Expo app 👋
+![GitHub README Banner](./README_Banner.png)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<div align="center">
+<h1> Welcome to PeerConnect </h1>
 
-## Get started
+![GitHub Repo stars](https://img.shields.io/github/stars/DolenDeori/PeerConnect?style=social)
+![GitHub forks](https://img.shields.io/github/forks/DolenDeori/PeerConnect?style=social)
+![GitHub issues](https://img.shields.io/github/issues/DolenDeori/PeerConnect)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/DolenDeori/PeerConnect)
+![GitHub license](https://img.shields.io/github/license/DolenDeori/PeerConnect)
+<br>
+![GitHub last commit](https://img.shields.io/github/last-commit/DolenDeori/PeerConnect)
+![GitHub repo size](https://img.shields.io/github/repo-size/DolenDeori/PeerConnect.svg?label=Repo%20size)
+![GitHub pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)
+![Github code style pretter](https://img.shields.io/badge/code%20style-prettier-ff69b4.svg?)
 
-1. Install dependencies
+</div>
 
-   ```bash
-   npm install
-   ```
+## About Peer Connect
 
-2. Start the app
+PeerConnect is a peer-to-peer (P2P) delivery system that enables users to send and receive packages efficiently. By leveraging travelers who are already moving between locations, PeerConnect aims to reduce delivery time and cost compared to traditional logistics services.
 
-   ```bash
-    npx expo start
-   ```
+## Table of Contents
 
-In the output, you'll find options to open the app in a
+- [About PeerConnect](#-about-peerconnect)
+- [How It Works](#-how-it-works)
+  - [Sending Packages](#-sending-packages)
+  - [Receiving & Delivering Packages](#-receiving--delivering-packages)
+  - [Payment System](#-payment-system)
+- [Tech Stack](#-tech-stack)
+- [Contribution Guidelines](#-contribution-guidelines)
+- [Repository Structure](#-repository-structure)
+- [Security and Privacy](#-security-and-privacy)
+- [Roadmap](#-roadmap)
+- [Contact](#-contact)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## How It Works
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Sending Packages
 
-## Get a fresh project
+1. Users can list a package for delivery by providing:
+   - Pickup and delivery locations
+   - Item description (weight, size, and contents)
+   - Receiver's contact information
+2. The package will be visible to travelers heading to the same destination.
+3. Once a traveler picks up the package, the sender can track its progress in real time.
+4. The receiver collects the package at the delivery location.
 
-When you're ready, run:
+### Receiving & Delivering Packages
 
-```bash
-npm run reset-project
+1. Travelers set their journey details (starting location and destination).
+2. The app shows a list of available packages along the same route.
+3. Travelers can pick up packages, deliver them, and receive payment after successful delivery.
+
+### Payment System
+
+- **Prepaid:** The sender pays in advance, and the payment is held until the package is delivered.
+- **Pay on Delivery:** A QR code is generated, allowing the receiver or sender to pay at the time of delivery.
+
+## Tech Stack
+
+- **Frontend:** React Native (for cross-platform mobile app development)
+- **Backend:** Node.js with Express (for APIs and data management)
+- **Database:** Firebase / MongoDB (for real-time tracking and storage)
+- **Maps & Location Services:** Google Maps API / OpenStreetMap
+- **Authentication:** Clerk Auth / OAuth
+
+## Repository Structure
+
+```
+PeerConnect/
+│-- app/
+│   │-- (auth)/       # App screens/pages
+│   │-- (root)/       # Navigation setup
+│-- assets/           # Static assets (images, icons, etc.)
+│-- components/       # Reusable components
+│-- constants/        # To store all contant values
+│-- scripts/
+│-- types/            # To define types
+│-- .gitignore
+│-- package.json
+│-- README.md
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Security and Privacy
 
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Secure authentication with clerk Auth/OAuth.
+- Encrypted data transmission.
+- Privacy-focused tracking system.
