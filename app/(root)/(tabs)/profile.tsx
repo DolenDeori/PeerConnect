@@ -5,6 +5,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  Image,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,6 +15,7 @@ import { useAuth, useUser } from "@clerk/clerk-expo";
 import CustomButton from "@/components/customButton";
 import { router } from "expo-router";
 import { ArrowLeft, ChevronLeft, Settings, UserCog } from "lucide-react-native";
+import { images } from "@/constant";
 
 const profile = () => {
   const { user } = useUser();
@@ -78,15 +80,20 @@ const profile = () => {
 
       {/* Add additional fields as needed */}
       <View className="py-6 px-2">
-        <View>
-          <Text className="font-DMSansMedium">Hello,</Text>
-          <Text className="font-HostGorteskBold text-xl">
-            {userData.fullName}
-          </Text>
+        <View className="flex-row gap-6 items-center">
+          <View>
+            <Image source={images.avatar_2} className="h-16 w-16" />
+          </View>
+          <View>
+            <Text className="font-DMSansMedium">Hello,</Text>
+            <Text className="font-HostGorteskBold text-xl">
+              {userData.fullName}
+            </Text>
+          </View>
         </View>
         <View className="gap-6 mt-6 border-b border-gray-200">
           <View>
-            <Text className="font-HostGorteskMedium">My Earning</Text>
+            <Text className="font-HostGorteskMedium">My Earnings</Text>
             {userData.earning ? (
               <View></View>
             ) : (
