@@ -13,7 +13,7 @@ const GoogleTextInput = ({
 }: GoogleInputProps) => {
   return (
     <View
-      className={`flex flex-row items-center justify-center relative z-50 rounded-xl ${containerStyle}`}
+      className={`flex flex-row items-center justify-center relative z-50 rounded-xl border mb-4 ${containerStyle}`}
     >
       <GooglePlacesAutocomplete
         fetchDetails={true}
