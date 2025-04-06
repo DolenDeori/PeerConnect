@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import MapView, { Marker, PROVIDER_DEFAULT } from "react-native-maps";
 import * as Location from "expo-location";
 
@@ -8,16 +8,10 @@ const Map = () => {
     latitude: 37.78825,
     longitude: -122.4324,
   };
-  const local = {
-    latitude: 37.78825,
-    longitude: -122.4324,
-  };
-  const [pin, setPin] = useState(local);
 
   const [myLocation, setMyLocation] = useState(initialLocation);
 
   useEffect(() => {
-    setPin(local);
     getLocation();
   }, []);
 
@@ -38,13 +32,13 @@ const Map = () => {
   return (
     <View style={style.container}>
       <MapView
-        provider="google"
+        provider={PROVIDER_DEFAULT}
         style={style.map}
         initialRegion={{
           latitude: myLocation.latitude,
           longitude: myLocation.longitude,
-          latitudeDelta: 0.1,
-          longitudeDelta: 0.0921,
+          latitudeDelta: 0.158,
+          longitudeDelta: 0.12,
         }}
         showsPointsOfInterest={false}
         showsUserLocation={true}
@@ -59,13 +53,6 @@ const Map = () => {
               longitude: myLocation.longitude,
             }}
             title="my current location"
-            description="I am here"
-          />
-        )}
-        {pin.latitude && pin.longitude && (
-          <Marker
-            coordinate={pin}
-            title="default location"
             description="I am here"
           />
         )}

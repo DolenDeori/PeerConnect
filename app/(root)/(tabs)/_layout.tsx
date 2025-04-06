@@ -1,7 +1,7 @@
 import { Tabs } from "expo-router";
 import { View, TouchableOpacity } from "react-native";
 import React from "react";
-import { CircleUser, House } from "lucide-react-native";
+import { CircleUser, House, Package } from "lucide-react-native";
 
 const TabIcon = ({
   children,
@@ -45,6 +45,24 @@ const Layout: React.FC = () => {
           tabBarIcon: ({ focused }) => (
             <TabIcon focused={focused}>
               <House
+                color={focused ? "#3b82f6" : "black"}
+                className={`${focused ? " color-blue-500" : "color-black"}`}
+              />
+            </TabIcon>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="package"
+        options={{
+          title: "Packages",
+          headerShown: false,
+          tabBarButton: (props) => (
+            <TouchableOpacity {...props} activeOpacity={1} />
+          ),
+          tabBarIcon: ({ focused }) => (
+            <TabIcon focused={focused}>
+              <Package
                 color={focused ? "#3b82f6" : "black"}
                 className={`${focused ? " color-blue-500" : "color-black"}`}
               />
