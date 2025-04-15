@@ -1,12 +1,7 @@
 import React, { useState } from "react";
-import {
-  TextInput,
-  View,
-  Text,
-  TouchableOpacity,
-  TextInputProps,
-} from "react-native";
+import { TextInput, View, Text, TouchableOpacity } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { InputFieldProps } from "@/types/type";
 
 const InputField = ({
   label,

@@ -18,6 +18,7 @@ const Layout: React.FC = () => {
     <Tabs
       initialRouteName="home"
       screenOptions={{
+        tabBarHideOnKeyboard: true,
         tabBarActiveTintColor: "white",
         tabBarInactiveTintColor: "white",
         tabBarShowLabel: true,
