@@ -5,6 +5,6 @@ export interface User {
   userName?: string;
   email: string;
   phoneNumber?: string;
-  password?: string;
   userProfile?: string;
+  createdAt: string;
 }
