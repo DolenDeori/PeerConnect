@@ -16,12 +16,16 @@ import CustomButton from "@/components/customButton";
 import { router } from "expo-router";
 import { ArrowLeft, ChevronLeft, Settings, UserCog } from "lucide-react-native";
 import { images } from "@/constant";
+import { getUserById } from "@/services/userService";
+import { User } from "@/models/userModel";
 
 const profile = () => {
   const { user } = useUser();
-  const [userData, setUserData] = useState<any>(null);
+  const [userData, setUserData] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const { signOut } = useAuth();
+
+  // for logout
   const onSginOutPress = async () => {
     try {
       await signOut();
@@ -39,11 +43,9 @@ const profile = () => {
         return;
       }
       try {
-        // Get the document reference using the Clerk user ID
-        const userDocRef = doc(db, "users", user.id);
-        const docSnap = await getDoc(userDocRef);
-        if (docSnap.exists()) {
-          setUserData(docSnap.data());
+        const data = await getUserById(user?.id);
+        if (data) {
+          setUserData(data);
         } else {
           Alert.alert(
             "No Data",
@@ -78,7 +80,6 @@ const profile = () => {
         </View>
       </TouchableWithoutFeedback>
 
-      {/* Add additional fields as needed */}
       <View className="py-6 px-2">
         <View className="flex-row gap-6 items-center">
           <View>
@@ -87,20 +88,16 @@ const profile = () => {
           <View>
             <Text className="font-DMSansMedium">Hello,</Text>
             <Text className="font-HostGorteskBold text-xl">
-              {userData.fullName}
+              {userData?.firstName} {userData?.lastName}
             </Text>
           </View>
         </View>
         <View className="gap-6 mt-6 border-b border-gray-200">
           <View>
             <Text className="font-HostGorteskMedium">My Earnings</Text>
-            {userData.earning ? (
-              <View></View>
-            ) : (
-              <View className="bg-blue-50 h-20 justify-center items-center mt-2 rounded-xl">
-                <Text className="text-gray-400">Travell to start earning</Text>
-              </View>
-            )}
+            <View className="bg-blue-50 h-20 justify-center items-center mt-2 rounded-xl">
+              <Text className="text-gray-400">Travel to start earning</Text>
+            </View>
           </View>
           <TouchableOpacity
             className="flex-row items-center gap-4 py-4 mb-4"

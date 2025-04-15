@@ -4,12 +4,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useUser } from "@clerk/clerk-expo";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
+import { getUserById } from "@/services/userService";
 
 const AccountSettings = () => {
   const { user } = useUser();
   const [userData, setUserData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const swiperRef = useRef(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -19,11 +19,9 @@ const AccountSettings = () => {
         return;
       }
       try {
-        // Get the document reference using the Clerk user ID
-        const userDocRef = doc(db, "users", user.id);
-        const docSnap = await getDoc(userDocRef);
-        if (docSnap.exists()) {
-          setUserData(docSnap.data());
+        const data = await getUserById(user?.id);
+        if (data) {
+          setUserData(data);
         } else {
           Alert.alert(
             "No Data",
@@ -58,7 +56,7 @@ const AccountSettings = () => {
         <View>
           <Text className="font-DMSansSemiBold">Username</Text>
           <TextInput
-            placeholder={userData.userName}
+            placeholder={userData?.userName}
             className="bg-gray-50 font-DMSansRegular px-2 py-4 mt-2 rounded-xl"
             editable={false}
           />
@@ -66,7 +64,7 @@ const AccountSettings = () => {
         <View>
           <Text className="font-DMSansSemiBold">Email</Text>
           <TextInput
-            placeholder={userData.email}
+            placeholder={userData?.email}
             className="bg-gray-50 font-DMSansRegular px-2 py-4 mt-2 rounded-xl"
             editable={false}
           />
@@ -74,7 +72,7 @@ const AccountSettings = () => {
         <View>
           <Text className="font-DMSansSemiBold">Phone Number</Text>
           <TextInput
-            placeholder={`+91-${userData.phoneNumber}`}
+            placeholder={`+91-${userData?.phoneNumber}`}
             className="bg-gray-50 font-DMSansRegular px-2 py-4 mt-2 rounded-xl"
             editable={false}
           />
