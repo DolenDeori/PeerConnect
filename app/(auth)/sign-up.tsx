@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Alert,
-  ScrollView,
-  Image,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Image } from "react-native";
 import InputField from "@/components/inputField";
 import CustomButton from "@/components/customButton";
 import { router } from "expo-router";
@@ -15,7 +8,9 @@ import OAuth from "@/components/oAuth";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import ReactNativeModal from "react-native-modal";
-import { icons, images } from "@/constant";
+import { images } from "@/constant";
+import { User } from "@/models/userModel";
+import { createUser } from "@/services/userService";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -23,16 +18,19 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
   });
+
   const [verification, setVerification] = useState({
     state: "default",
     error: "",
     code: "",
   });
+
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
   const { isLoaded, signUp, setActive } = useSignUp();
-  // const { isSignedIn, user } = useUser();
 
   const validateEmail = (email: string): boolean => {
     const regex = /\S+@\S+\.\S+/;
@@ -40,26 +38,24 @@ const SignUp = () => {
   };
 
   const handleSignup = async () => {
+    setError("");
+    setLoading(true);
+
     if (!isLoaded) return;
+
     if (!validateEmail(form.email)) {
-      Alert.alert("Invalid Email, Please enter a valid email address.");
+      setError("Invalid Email, Please enter a valid email address.");
+      setLoading(false);
       return;
     }
     // Validate password match.
     if (form.password !== form.confirmPassword) {
-      Alert.alert("Password Mismatch, Passwords do not match.");
-      return;
-    }
-    // (Optional) Check for a minimum password length.
-    if (form.password.length < 6) {
-      Alert.alert(
-        "Weak Password, Password must be at least 6 characters long."
-      );
+      setError("Password Mismatch, Passwords do not match.");
+      setLoading(false);
       return;
     }
 
     try {
-      
       await signUp.create({
         emailAddress: form.email,
         password: form.password,
@@ -73,12 +69,20 @@ const SignUp = () => {
         ...verification,
         state: "pending",
       });
-    } catch (error) {
-      Alert.alert("Error", err.errors[0].longMessage);
+    } catch (error: any) {
+      const errorMessage = error.errors[0].longMessage;
+      setError(errorMessage);
     }
+    setLoading(false);
   };
 
   const onVerifyPress = async () => {
+    /* * This function will get called when user press the verfy button.
+     * This will verify the user email and create a user record in the firestore.
+     */
+    setLoading(true);
+    setError("");
+
     if (!isLoaded) return;
 
     try {
@@ -88,16 +92,13 @@ const SignUp = () => {
 
       if (signUpAttempt.status === "complete") {
         const partialUserData = {
+          id: signUpAttempt.createdUserId,
           email: form.email,
-          role: "sender",
           createdAt: new Date().toISOString(),
         };
 
         // create a firestore document with clerk userID
-        await setDoc(
-          doc(db, "users", `${signUpAttempt.createdUserId}`),
-          partialUserData
-        );
+        await createUser({ ...partialUserData } as User);
 
         // make the session active for that user
         await setActive({ session: signUpAttempt.createdSessionId });
@@ -108,14 +109,16 @@ const SignUp = () => {
           error: "verification failed",
           state: "failed",
         });
+        setLoading(false);
       }
-    } catch (err) {
+    } catch (err: any) {
       setVerification({
         ...verification,
-        error: err.errors[0].longMessage,
+        error: err.errors[0].longMessage || "Something went wrong",
         state: "failed",
       });
     }
+    setLoading(false);
   };
 
   return (
@@ -132,6 +135,11 @@ const SignUp = () => {
 
           {/* Form Fields */}
           <View className="mt-8">
+            {error && (
+              <View className="p-2 bg-red-100 mb-4 rounded">
+                <Text className="font-DMSansRegular text-red-700">{error}</Text>
+              </View>
+            )}
             <InputField
               label="Email"
               placeholder="Enter your email"
@@ -148,7 +156,6 @@ const SignUp = () => {
                 setForm({ ...form, password: value })
               }
               isPassword
-              error={error}
             />
             <InputField
               label="Confirm Password"
@@ -158,12 +165,16 @@ const SignUp = () => {
                 setForm({ ...form, confirmPassword: value })
               }
               isPassword
-              error={error}
             />
           </View>
 
           {/* Submit Button */}
-          <CustomButton title="Next" onPress={handleSignup} className="mt-4" />
+          <CustomButton
+            title="Next"
+            onPress={handleSignup}
+            className="mt-4"
+            loading={loading}
+          />
 
           {/* Google OAuth */}
           <OAuth />

@@ -14,10 +14,29 @@ const SignIn = () => {
 
   const { signIn, setActive, isLoaded } = useSignIn();
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const isValidEmail = (email: string) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
 
   const onSignInPress = async () => {
-    if (!isLoaded) return;
+    setError("");
+    setLoading(true);
+
+    if (!isLoaded) {
+      setLoading(false);
+      return;
+    }
+
+    if (!isValidEmail(form.email)) {
+      setError("Please enter a valid email address.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const signInAttempt = await signIn.create({
         identifier: form.email,
@@ -28,11 +47,15 @@ const SignIn = () => {
         await setActive({ session: signInAttempt.createdSessionId });
         router.replace("/(root)/(tabs)/home");
       } else {
-        Alert.alert("Error", JSON.stringify(signInAttempt, null, 2));
+        setError("Sign-in not completed. Please try again.");
       }
-    } catch (error) {
-      Alert.alert("Error", err.errors[0].longMessage);
+    } catch (error: any) {
+      const errorMessage =
+        error.errors[0].longMessage || "Something went wrong please try again.";
+      setError(errorMessage);
     }
+
+    setLoading(false);
   };
 
   return (
@@ -48,16 +71,23 @@ const SignIn = () => {
 
         {/* Form Fields */}
         <View>
+          {error && (
+            <View className="p-2 bg-red-100 mb-4 rounded">
+              <Text className="font-DMSansRegular text-red-700">{error}</Text>
+            </View>
+          )}
           <InputField
             label="Enter Email"
             placeholder="Enter Email"
             value={form.email}
             onChangeText={(value: string) => setForm({ ...form, email: value })}
+            onFocus={() => setError("")}
           />
           <InputField
             label="Enter Password"
             placeholder="Password"
             value={form.password}
+            onFocus={() => setError("")}
             onChangeText={(value: string) =>
               setForm({ ...form, password: value })
             }
@@ -74,6 +104,7 @@ const SignIn = () => {
           title="Sign In"
           className="mt-8"
           onPress={onSignInPress}
+          loading={loading}
         />
 
         {/* Google OAuth */}
