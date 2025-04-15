@@ -2,11 +2,11 @@ import { View, Text, Alert } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputField from "@/components/inputField";
-import { db } from "@/firebaseConfig";
 import { useUser } from "@clerk/clerk-expo";
 import { router } from "expo-router";
 import CustomButton from "@/components/customButton";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { updateUserById } from "@/services/userService";
+import { User } from "@/models/userModel";
 
 const ExtraInfo = () => {
   const { user } = useUser();
@@ -34,14 +34,14 @@ const ExtraInfo = () => {
       }
 
       // Update the existing user table
-      const userRef = doc(db, "users", user.id);
-      await updateDoc(userRef, {
+      const userInfo = {
         fullName,
         userName,
         firstName: form.firstName.trim(),
         lastName: form.lastName.trim(),
         phoneNumber: form.phoneNumber,
-      });
+      };
+      await updateUserById(user.id, userInfo as User);
 
       Alert.alert(
         "Profile Created",
@@ -49,7 +49,7 @@ const ExtraInfo = () => {
       );
 
       router.replace("/(root)/(tabs)/home");
-    } catch (error) {
+    } catch (error: any) {
       Alert.alert("Error Updating Profile", error.errors[0].longMessage);
     }
   };

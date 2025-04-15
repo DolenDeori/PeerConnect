@@ -107,6 +107,13 @@ const profile = () => {
             <Text className="font-DMSansMedium">Account Settings</Text>
           </TouchableOpacity>
         </View>
+        <View>
+          <CustomButton
+            title="log out"
+            bgVariant="danger"
+            onPress={onSginOutPress}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );

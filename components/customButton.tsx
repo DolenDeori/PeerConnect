@@ -1,5 +1,5 @@
 import { ButtonProps } from "@/types/type";
-import { Text, TouchableOpacity } from "react-native";
+import { ActivityIndicator, Text, TouchableOpacity } from "react-native";
 
 const getBgVariantStyle = (variant: ButtonProps["bgVariant"]) => {
   switch (variant) {
@@ -38,6 +38,7 @@ const CustomButton = ({
   onPress,
   bgVariant = "primary",
   textVariant = "primary",
+  loading = false,
   IconLeft,
   IconRight,
   className,
@@ -51,13 +52,17 @@ const CustomButton = ({
     {...props}
   >
     {IconLeft && <IconLeft />}
-    <Text
-      className={`text-lg font-HostGorteskBold ${getTextVariantStyle(
-        textVariant
-      )}`}
-    >
-      {title}
-    </Text>
+    {loading ? (
+      <ActivityIndicator color="white" />
+    ) : (
+      <Text
+        className={`text-lg font-HostGorteskBold ${getTextVariantStyle(
+          textVariant
+        )}`}
+      >
+        {title}
+      </Text>
+    )}
     {IconRight && <IconRight />}
   </TouchableOpacity>
 );
