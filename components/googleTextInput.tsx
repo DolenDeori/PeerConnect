@@ -8,6 +8,7 @@ const googlePlacesApiKey = process.env.EXPO_PUBLIC_GOOGLE_API_KEY;
 const GoogleTextInput = ({
   initialLocation,
   containerStyle,
+  placeholder,
   textInputBackgroundColor,
   handlePress,
 }: GoogleInputProps) => {
@@ -57,14 +58,14 @@ const GoogleTextInput = ({
           key: googlePlacesApiKey,
           language: "en",
         }}
-        renderLeftButton={() => (
-          <View className="justify-center items-center w-6 h-6">
-            <SearchIcon color={"black"} size={20} />
-          </View>
-        )}
+        // renderLeftButton={() => (
+        //   <View className="justify-center items-center w-6 h-6">
+        //     <SearchIcon color={"black"} size={20} />
+        //   </View>
+        // )}
         textInputProps={{
           placeholderTextColor: "gray",
-          placeholder: initialLocation ?? "Where do you want to go? ",
+          placeholder: initialLocation ?? placeholder,
         }}
       />
     </View>
