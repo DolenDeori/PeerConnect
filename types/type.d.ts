@@ -30,6 +30,7 @@ interface InputFieldProps extends TextInputProps {
 declare interface GoogleInputProps {
   initialLocation?: string;
   containerStyle?: string;
+  placeholder?: string;
   textInputBackgroundColor?: string;
   handlePress: ({
     latitude,
