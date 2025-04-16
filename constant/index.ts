@@ -9,6 +9,19 @@ import avatar_1 from "@/assets/images/profile_image_1.png";
 import avatar_2 from "@/assets/images/profile_image_2.png";
 // import lock from "@/assets/icons/lock.png";
 
+import {
+  Package,
+  PackageCheck,
+  MapPinCheckInside,
+  Wallet,
+  CircleUser,
+  Settings,
+  Truck,
+  MessagesSquare,
+  Gift,
+  CircleHelp,
+} from "lucide-react-native";
+
 export const icons = {
   google_icon,
   // lock,
@@ -113,9 +126,41 @@ export const homeMenuItems = [
     url: "/(root)/track-package",
   },
   {
-    title: "Report a Problem",
-    subtitle: "Submit to get help",
+    title: "My Deliveries",
+    subtitle: "See your listed deliveries",
     icon: require("@/assets/icons/google.png"),
     url: "/(root)/(sender)/multistep/step1",
+  },
+];
+
+export const homeSidebarMenuLinks = [
+  {
+    id: "main",
+    items: [
+      { label: "Send Package", icon: Package, link: "" },
+      {
+        label: "Deliver Package",
+        icon: Truck,
+        link: "",
+      },
+      { label: "My Packages", icon: PackageCheck, link: "" },
+      { label: "My Deliveries", icon: MapPinCheckInside, link: "" },
+    ],
+  },
+  {
+    id: "finance",
+    items: [
+      { label: "Rewards", icon: Gift, link: "" },
+      { label: "My Earnings", icon: Wallet, link: "" },
+    ],
+  },
+  {
+    id: "account",
+    items: [
+      { label: "My Account", icon: CircleUser, link: "/(root)/profile" },
+      { label: "Settings", icon: Settings, link: "" },
+      { label: "Help", icon: CircleHelp, link: "" },
+      { label: "Contact Us", icon: MessagesSquare, link: "" },
+    ],
   },
 ];
