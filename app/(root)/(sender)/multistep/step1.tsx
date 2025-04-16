@@ -6,6 +6,8 @@ import { router } from "expo-router";
 import CustomButton from "@/components/customButton";
 import InputField from "@/components/inputField";
 import { useForm } from "@/app/contex/FormContex";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import GoogleTextInput from "@/components/googleTextInput";
 
 const Step1 = () => {
   const { formData, updateFormData } = useForm();
@@ -29,32 +31,16 @@ const Step1 = () => {
           <Text>Back</Text>
         </View>
       </TouchableOpacity>
-      <ScrollView>
-        <View className="mt-4">
-          <Text className="text-3xl font-HostGorteskBold">
-            Location Information
-          </Text>
-          <Text className="font-DMSansRegular">
-            Please provide your location information
-          </Text>
-        </View>
-        <View className="mt-6">
-          <InputField
-            label="Pick Up Address"
-            placeholder="Enter Pickup Point"
-            value={pickupPoint}
-            onChangeText={setPickupPoint}
-            className="bg-gray-100 rounded-lg p-4 mb-4"
-          />
-          <InputField
-            label="Delivery Address"
-            placeholder="Enter Delivery Point"
-            value={deliveryPoint}
-            onChangeText={setDeliveryPoint}
-            className="bg-gray-100 rounded-lg p-4 mb-4"
-          />
-        </View>
-      </ScrollView>
+      <View className="mt-4">
+        <Text className="text-3xl font-HostGorteskBold">Send Package</Text>
+        <Text className="font-DMSansRegular">
+          Please provide your location information
+        </Text>
+      </View>
+      <View className="mt-6">
+        <GoogleTextInput placeholder="Select Pickup Location" />
+        <GoogleTextInput placeholder="Select Delivery Location" />
+      </View>
       <View className="py-2">
         <CustomButton title="Next" onPress={handleNext} />
       </View>

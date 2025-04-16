@@ -78,7 +78,6 @@ export const dropdownOptions = {
   ],
 };
 
-
 export const swiperImages = [
   {
     id: 1,
@@ -91,5 +90,32 @@ export const swiperImages = [
   {
     id: 3,
     uri: "https://images.unsplash.com/photo-1607082350899-7e105aa886ae?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+];
+
+export const homeMenuItems = [
+  {
+    title: "Send Package",
+    subtitle: "Ship your parcels with us",
+    icon: require("@/assets/icons/google.png"), // Replace with your local asset or use an Image URI
+    url: "/(root)/(sender)/multistep/step1",
+  },
+  {
+    title: "Travelling",
+    subtitle: "Earn money by delivering packages",
+    icon: require("@/assets/icons/google.png"),
+    url: "/(root)/(traveler)/traveler",
+  },
+  {
+    title: "My Packages",
+    subtitle: "See your listed packages",
+    icon: require("@/assets/icons/google.png"),
+    url: "/(root)/track-package",
+  },
+  {
+    title: "Report a Problem",
+    subtitle: "Submit to get help",
+    icon: require("@/assets/icons/google.png"),
+    url: "/(root)/(sender)/multistep/step1",
   },
 ];
