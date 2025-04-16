@@ -49,7 +49,7 @@ const Home = () => {
         style={[{ width: screenWidth * 0.7 }, sidebarStyle]}
         className="h-full bg-white absolute top-0 left-0 z-30 p-4"
       >
-        <View className="flex-row justify-between items-center mb-4">
+        <View className="flex-row justify-between items-center mb-2">
           <Text className="text-xl font-HostGorteskBold">Options</Text>
           <TouchableOpacity onPress={() => toggleSidebar(false)}>
             <X size={24} color="black" />
