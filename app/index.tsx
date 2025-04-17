@@ -1,4 +1,5 @@
 import "react-native-get-random-values";
+import "react-native-reanimated";
 import { Redirect } from "expo-router";
 import { useAuth } from "@clerk/clerk-expo";
 
