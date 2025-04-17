@@ -13,8 +13,10 @@ import CustomButton from "@/components/customButton";
 import { useForm } from "@/app/contex/FormContex";
 import { ChevronDown, ChevronLeft, X } from "lucide-react-native";
 import { dropdownOptions } from "@/constant";
+import StepProgressBar from "@/components/stepProgressBar";
 
 const Step2 = () => {
+  const steps = ["Location", "Package", "Receiver", "Summary"];
   const router = useRouter();
   const { formData, updateFormData } = useForm();
 
@@ -106,13 +108,7 @@ const Step2 = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white p-4">
-      <TouchableOpacity onPress={() => router.back()}>
-        <View className="flex-row items-center py-2">
-          <ChevronLeft color={"black"} />
-          <Text className="font-DMSansMedium">Back</Text>
-        </View>
-      </TouchableOpacity>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View className="mt-5">
           <Text className="text-3xl font-HostGorteskBold">Package Details</Text>
           <Text className="font-DMSansRegular">Enter your package detail</Text>
@@ -150,9 +146,6 @@ const Step2 = () => {
           />
         </View>
       </ScrollView>
-      <View className="py-2">
-        <CustomButton title="Next" onPress={handleNext} />
-      </View>
       {/* Dropdown Modal */}
       <Modal
         visible={modalVisible}
