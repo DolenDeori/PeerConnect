@@ -1,6 +1,7 @@
 export interface PackageModel {
   id: string;
   senderId: string;
+  trackingNumber: string;
   packageInfo: {
     type: string;
     weight: string;
@@ -13,8 +14,15 @@ export interface PackageModel {
   receiverInfo: {
     name: string;
     phoneNumber: string;
-    alternativePhoneNumber?: string;
     email?: string;
+    alternativePhoneNumber?: string;
+  };
+  packageDeliveryInfo?: {
+    travelerId?: string;
+    pickupDate?: string;
+    pickupTime?: string;
+    deliveryDate?: string;
+    deliveryTime?: string;
   };
   status: string | "pending" | "in transit" | "delivered"; // e.g., "pending", "in transit", "delivered"
 }
