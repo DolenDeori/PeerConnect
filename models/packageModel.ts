@@ -1,6 +1,7 @@
 export interface PackageModel {
   id: string;
   senderId: string;
+  travelerId?: string;
   trackingNumber: string;
   packageInfo: {
     type: string;
@@ -18,7 +19,6 @@ export interface PackageModel {
     alternativePhoneNumber?: string;
   };
   packageDeliveryInfo?: {
-    travelerId?: string;
     pickupDate?: string;
     pickupTime?: string;
     deliveryDate?: string;
