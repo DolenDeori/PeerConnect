@@ -8,7 +8,7 @@ import {
   Dimensions,
   Pressable,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BellIcon, Menu, MessageCircleQuestion, X } from "lucide-react-native";
 import ImageCarousel from "@/components/ImageCarousel";
@@ -20,6 +20,7 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
+import BottomSheet from "@gorhom/bottom-sheet";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -129,23 +130,17 @@ const Home = () => {
               ))}
             </View>
           </View>
-          {/* Tracking Box */}
-          <View className="mt-6 mx-2 p-4 bg-blue-700 rounded-xl">
-            <Text className="font-HostGorteskBold text-2xl text-white">
-              Track Your Package
+          {/* Footer Area */}
+          <View className="p-2 my-8">
+            <Text className="text-5xl/tight font-HostGorteskBold text-gray-300">
+              Send, Travel &
             </Text>
-            <Text className="font-DMSansRegular mt-2 text-white">
-              Please enter your tracking number
+            <Text className="text-5xl font-HostGorteskBold text-gray-300">
+              Earn.
             </Text>
-            <TextInput
-              className="bg-white rounded-lg mt-4 p-4 py-5"
-              placeholder="Enter your tracking id"
-            />
-            <CustomButton
-              title="Search Now"
-              className="mt-4"
-              bgVariant="outline"
-            />
+            <Text className="text-gray-400 italic font-DMSansMedium text-lg">
+              Built for modern senders and travelers.
+            </Text>
           </View>
         </View>
       </ScrollView>
