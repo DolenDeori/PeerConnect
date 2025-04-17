@@ -157,7 +157,6 @@ export const homeSidebarMenuLinks = [
   {
     id: "account",
     items: [
-      { label: "My Account", icon: CircleUser, link: "/(root)/profile" },
       { label: "Settings", icon: Settings, link: "" },
       { label: "Help", icon: CircleHelp, link: "" },
       { label: "Contact Us", icon: MessagesSquare, link: "" },

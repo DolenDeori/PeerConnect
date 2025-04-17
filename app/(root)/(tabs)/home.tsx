@@ -7,6 +7,7 @@ import {
   Image,
   Dimensions,
   Pressable,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -129,7 +130,6 @@ const Home = () => {
               ))}
             </View>
           </View>
-
           {/* Tracking Box */}
           <View className="mt-6 mx-2 p-4 bg-blue-700 rounded-xl">
             <Text className="font-HostGorteskBold text-2xl text-white">
