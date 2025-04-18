@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useTravellerForm } from "@/app/contex/TravelerFormContex";
 import { db } from "@/firebaseConfig";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "expo-router";
@@ -16,40 +15,8 @@ import CustomButton from "@/components/customButton";
 
 const TravellerStep2 = () => {
   const router = useRouter();
-  const { formData, updateFormData } = useTravellerForm();
   const [packages, setPackages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchPackages = async () => {
-      try {
-        const { startLocation, destinationLocation } = formData.travelInfo;
-        // Adjust the field paths as per your packages document structure
-        const q = query(
-          collection(db, "packages"),
-          where("locationInfo.pickupPoint", "==", startLocation),
-          where("locationInfo.deliveryPoint", "==", destinationLocation)
-        );
-        const querySnapshot = await getDocs(q);
-        const packagesData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setPackages(packagesData);
-      } catch (error) {
-        console.error("Error fetching packages: ", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPackages();
-  }, [formData.travelInfo]);
-
-  const handleSelectPackage = (pkg: any) => {
-    updateFormData("selectedPackage", pkg);
-    router.push("/(root)/(traveler)/step3");
-  };
 
   if (loading) {
     return (
@@ -69,10 +36,7 @@ const TravellerStep2 = () => {
           data={packages}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => handleSelectPackage(item)}
-              className="p-4 border border-gray-200 rounded-lg mb-4"
-            >
+            <TouchableOpacity className="p-4 border border-gray-200 rounded-lg mb-4">
               <Text className="text-lg font-bold">
                 {item.packageDetails?.packageType || "Package"}
               </Text>
