@@ -5,7 +5,7 @@ export const senderFromSchema = z.object({
   deliveryLocation: z
     .string()
     .min(1, { message: "Delivery location is required" }),
-  packageWeight: z.number().min(1, { message: "Package weight is required" }),
+  packageWeight: z.string().min(1, { message: "Package weight is required" }),
   packageDimensions: z
     .string()
     .min(1, { message: "Package dimensions are required" }),

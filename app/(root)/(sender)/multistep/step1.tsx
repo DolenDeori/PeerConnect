@@ -2,6 +2,8 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React, { useMemo } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BottomSheet from "@gorhom/bottom-sheet";
+import { SenderFormData } from "@/validation";
+import { useFormStore } from "@/store";
 
 const Step1 = () => {
   const snapPoints = useMemo(() => ["25%", "50%", "70%"], []);

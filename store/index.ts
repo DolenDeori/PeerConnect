@@ -3,7 +3,7 @@ import { create } from "zustand";
 interface SenderFormData {
   pickupLocation: string;
   deliveryLocation: string;
-  packageWeight: number;
+  packageWeight: string;
   packageDimensions: string;
   packageType: string;
   packageContent: string;
