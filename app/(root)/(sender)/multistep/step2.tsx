@@ -9,33 +9,22 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
-import CustomButton from "@/components/customButton";
-import { useForm } from "@/app/contex/FormContex";
-import { ChevronDown, ChevronLeft, X } from "lucide-react-native";
+import { ChevronDown, X } from "lucide-react-native";
 import { dropdownOptions } from "@/constant";
-import StepProgressBar from "@/components/stepProgressBar";
+import { SenderFormData } from "@/validation";
+import { useFormStore } from "@/store";
 
 const Step2 = () => {
   const steps = ["Location", "Package", "Receiver", "Summary"];
   const router = useRouter();
-  const { formData, updateFormData } = useForm();
+  const { data, updateData } = useFormStore();
 
   // Local states for dropdowns and text inputs
-  const [packageType, setPackageType] = useState(
-    formData.packageDetails.packageType
-  );
-  const [packageSize, setPackageSize] = useState(
-    formData.packageDetails.packageSize
-  );
-  const [packageWeight, setPackageWeight] = useState(
-    formData.packageDetails.packageWeight
-  );
-  const [packageContent, setPackageContent] = useState(
-    formData.packageDetails.packageContent
-  );
-  const [waitingPeriod, setWaitingPeriod] = useState(
-    formData.packageDetails.waitingPeriod
-  );
+  const [packageType, setPackageType] = useState(data.pickupLocation);
+  const [packageSize, setPackageSize] = useState(data.deliveryLocation);
+  const [packageWeight, setPackageWeight] = useState(data.packageWeight);
+  const [packageContent, setPackageContent] = useState(data.packageContent);
+  const [waitingPeriod, setWaitingPeriod] = useState(data.deliveryLocation);
 
   // Dropdown modal state
   const [modalVisible, setModalVisible] = useState(false);
@@ -95,17 +84,6 @@ const Step2 = () => {
     </View>
   );
 
-  const handleNext = () => {
-    updateFormData("packageDetails", {
-      packageType,
-      packageSize,
-      packageWeight,
-      packageContent,
-      waitingPeriod,
-    });
-    router.push("/multistep/step3");
-  };
-
   return (
     <SafeAreaView className="flex-1 bg-white p-4">
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -116,31 +94,31 @@ const Step2 = () => {
         <View className="mt-6">
           <CustomDropdown
             label="Package Type"
-            value={packageType}
+            value={packageType as string}
             placeholder="Select Package Type"
             dropdownKey="packageType"
           />
           <CustomDropdown
             label="Package Size"
-            value={packageSize}
+            value={packageSize as string}
             placeholder="Select Package Size"
             dropdownKey="packageSize"
           />
           <CustomDropdown
             label="Package Weight"
-            value={packageWeight}
+            value={packageWeight as string}
             placeholder="Select Package Weight"
             dropdownKey="packageWeight"
           />
           <CustomDropdown
             label="Package Content"
-            value={packageContent}
+            value={packageContent as string}
             placeholder="Select Package Content"
             dropdownKey="packageContent"
           />
           <CustomDropdown
             label="Waiting Period"
-            value={waitingPeriod}
+            value={waitingPeriod as string}
             placeholder="Select Waiting Period"
             dropdownKey="waitingPeriod"
           />
