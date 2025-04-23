@@ -1,24 +1,15 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 import React, { useMemo } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import BottomSheet from "@gorhom/bottom-sheet";
-import { SenderFormData } from "@/validation";
-import { useFormStore } from "@/store";
+import CustomBottomSheet from "@/components/customBottomSheet";
 
 const Step1 = () => {
   const snapPoints = useMemo(() => ["25%", "50%", "70%"], []);
   return (
-    <SafeAreaView className="flex-1 bg-white p-4">
-      <View className="mt-4">
-        <Text className="text-3xl font-HostGorteskBold">Send Your Package</Text>
-        <Text className="font-DMSansRegular">
-          Provide your location information
-        </Text>
-      </View>
-      <BottomSheet snapPoints={snapPoints}>
-        <Text>Hello I am a Bottom Sheet</Text>
-      </BottomSheet>
-    </SafeAreaView>
+    <View className="flex-1">
+      <CustomBottomSheet snapPoints={["25%", "40%"]}>
+        <Text>This is a custom bottom sheet</Text>
+      </CustomBottomSheet>
+    </View>
   );
 };
 

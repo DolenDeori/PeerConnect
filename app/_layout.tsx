@@ -15,6 +15,7 @@ export default function RootLayout() {
   if (!publishableKey) {
     throw new Error("Add EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY to your .env file");
   }
+  
   const [loaded] = useFonts({
     "DMSans-Regular": require("../assets/fonts/DMSans-Regular.ttf"),
     "DMSans-Medium": require("../assets/fonts/DMSans-Medium.ttf"),
