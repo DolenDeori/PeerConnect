@@ -7,14 +7,16 @@ import icon from "@/assets/images/icon.png";
 import google_icon from "@/assets/icons/google.png";
 import avatar_1 from "@/assets/images/profile_image_1.png";
 import avatar_2 from "@/assets/images/profile_image_2.png";
-// import lock from "@/assets/icons/lock.png";
+import send_package from "@/assets/icons/send_package.png";
+import traveling_package from "@/assets/icons/traveling_package.png";
+import my_package from "@/assets/icons/my_package.png";
+import my_delivery from "@/assets/icons/my_delivery.png";
 
 import {
   Package,
   PackageCheck,
   MapPinCheckInside,
   Wallet,
-  CircleUser,
   Settings,
   Truck,
   MessagesSquare,
@@ -24,7 +26,9 @@ import {
 
 export const icons = {
   google_icon,
-  // lock,
+  send_package,
+  traveling_package,
+  my_package,
 };
 
 export const images = {
@@ -110,25 +114,25 @@ export const homeMenuItems = [
   {
     title: "Send Package",
     subtitle: "Ship your parcels with us",
-    icon: require("@/assets/icons/google.png"), // Replace with your local asset or use an Image URI
+    icon: send_package, // Replace with your local asset or use an Image URI
     url: "/(root)/(sender)/multistep/step1",
   },
   {
     title: "Travelling",
     subtitle: "Earn money by delivering packages",
-    icon: require("@/assets/icons/google.png"),
+    icon: traveling_package,
     url: "/(root)/(traveler)/traveler",
   },
   {
     title: "My Packages",
     subtitle: "See your listed packages",
-    icon: require("@/assets/icons/google.png"),
+    icon: my_package,
     url: "/(root)/track-package",
   },
   {
     title: "My Deliveries",
     subtitle: "See your listed deliveries",
-    icon: require("@/assets/icons/google.png"),
+    icon: my_delivery,
     url: "/(root)/(sender)/multistep/step1",
   },
 ];
@@ -137,13 +141,17 @@ export const homeSidebarMenuLinks = [
   {
     id: "main",
     items: [
-      { label: "Send Package", icon: Package, link: "" },
+      {
+        label: "Send Package",
+        icon: Package,
+        link: "/(root)/(sender)/multistep/step1",
+      },
       {
         label: "Deliver Package",
         icon: Truck,
-        link: "",
+        link: "/(root)/(traveler)/traveler",
       },
-      { label: "My Packages", icon: PackageCheck, link: "" },
+      { label: "My Packages", icon: PackageCheck, link: "/track-package" },
       { label: "My Deliveries", icon: MapPinCheckInside, link: "" },
     ],
   },
