@@ -27,18 +27,16 @@ interface InputFieldProps extends TextInputProps {
   errorClassName?: string;
 }
 
-declare interface GoogleInputProps {
+export interface LocationFromGoogle {
+  latitude: number;
+  longitude: number;
+  address: string;
+}
+
+export interface GoogleInputProps {
   initialLocation?: string;
   containerStyle?: string;
   placeholder?: string;
   textInputBackgroundColor?: string;
-  handlePress: ({
-    latitude,
-    longitude,
-  }: // address,
-  {
-    latitude: number;
-    longitude: number;
-    // address: string;
-  }) => void;
+  handlePress: (location: LocationFromGoogle) => void;
 }
