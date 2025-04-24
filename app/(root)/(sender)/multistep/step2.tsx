@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Text,
   View,
@@ -11,11 +11,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { ChevronDown, X } from "lucide-react-native";
 import { dropdownOptions } from "@/constant";
-import { useFormStore } from "@/store";
+import { useFormStore, useNavigationStore } from "@/store";
+import { useEffect } from "react";
 
 const Step2 = () => {
   const router = useRouter();
   const { data, updateField } = useFormStore();
+  const { setHandleNext } = useNavigationStore();
 
   const [packageType, setPackageType] = useState(data.packageType ?? "");
   const [packageSize, setPackageSize] = useState(data.packageSize ?? "");
@@ -47,14 +49,22 @@ const Step2 = () => {
     setActiveDropdown(null);
   };
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
+    console.log("Step 2 → updating form data");
+
     updateField("packageType", packageType);
     updateField("packageSize", packageSize);
     updateField("packageWeight", packageWeight);
     updateField("packageContent", packageContent);
 
     router.push("/step3");
-  };
+  }, []);
+
+  useEffect(() => {
+    setHandleNext(() => handleNext);
+
+    return () => setHandleNext(null);
+  }, [handleNext]);
 
   const CustomDropdown = ({
     label,
