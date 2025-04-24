@@ -11,27 +11,23 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { ChevronDown, X } from "lucide-react-native";
 import { dropdownOptions } from "@/constant";
-import { SenderFormData } from "@/validation";
 import { useFormStore } from "@/store";
 
 const Step2 = () => {
-  const steps = ["Location", "Package", "Receiver", "Summary"];
   const router = useRouter();
-  const { data, updateData } = useFormStore();
+  const { data, updateField } = useFormStore();
 
-  // Local states for dropdowns and text inputs
-  const [packageType, setPackageType] = useState(data.pickupLocation);
-  const [packageSize, setPackageSize] = useState(data.deliveryLocation);
-  const [packageWeight, setPackageWeight] = useState(data.packageWeight);
-  const [packageContent, setPackageContent] = useState(data.packageContent);
-  const [waitingPeriod, setWaitingPeriod] = useState(data.deliveryLocation);
+  const [packageType, setPackageType] = useState(data.packageType ?? "");
+  const [packageSize, setPackageSize] = useState(data.packageSize ?? "");
+  const [packageWeight, setPackageWeight] = useState(data.packageWeight ?? "");
+  const [packageContent, setPackageContent] = useState(
+    data.packageContent ?? ""
+  );
 
-  // Dropdown modal state
   const [modalVisible, setModalVisible] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   const handleSelect = (value: string) => {
-    if (!activeDropdown) return;
     switch (activeDropdown) {
       case "packageType":
         setPackageType(value);
@@ -45,15 +41,21 @@ const Step2 = () => {
       case "packageContent":
         setPackageContent(value);
         break;
-      case "waitingPeriod":
-        setWaitingPeriod(value);
-        break;
     }
+
     setModalVisible(false);
     setActiveDropdown(null);
   };
 
-  // Custom Dropdown component using NativeWind classes
+  const handleNext = () => {
+    updateField("packageType", packageType);
+    updateField("packageSize", packageSize);
+    updateField("packageWeight", packageWeight);
+    updateField("packageContent", packageContent);
+
+    router.push("/step3");
+  };
+
   const CustomDropdown = ({
     label,
     value,
@@ -91,40 +93,35 @@ const Step2 = () => {
           <Text className="text-3xl font-HostGorteskBold">Package Details</Text>
           <Text className="font-DMSansRegular">Enter your package detail</Text>
         </View>
+
         <View className="mt-6">
           <CustomDropdown
             label="Package Type"
-            value={packageType as string}
+            value={packageType}
             placeholder="Select Package Type"
             dropdownKey="packageType"
           />
           <CustomDropdown
             label="Package Size"
-            value={packageSize as string}
+            value={packageSize}
             placeholder="Select Package Size"
             dropdownKey="packageSize"
           />
           <CustomDropdown
             label="Package Weight"
-            value={packageWeight as string}
+            value={packageWeight}
             placeholder="Select Package Weight"
             dropdownKey="packageWeight"
           />
           <CustomDropdown
             label="Package Content"
-            value={packageContent as string}
+            value={packageContent}
             placeholder="Select Package Content"
             dropdownKey="packageContent"
           />
-          <CustomDropdown
-            label="Waiting Period"
-            value={waitingPeriod as string}
-            placeholder="Select Waiting Period"
-            dropdownKey="waitingPeriod"
-          />
         </View>
       </ScrollView>
-      {/* Dropdown Modal */}
+
       <Modal
         visible={modalVisible}
         transparent
