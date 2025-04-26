@@ -31,7 +31,7 @@ const InputField = ({
       {/* Input */}
       <View className="relative">
         <TextInput
-          className={`h-12 px-4 border rounded-lg text-base bg-gray-50 font-DMSansRegular ${
+          className={`px-4 py-4 border rounded-lg text-base bg-gray-50 font-DMSansRegular ${
             error ? "border-red-600" : "border-gray-300"
           } ${inputClassName} focus:border-purple-300`}
           placeholderTextColor="#999"

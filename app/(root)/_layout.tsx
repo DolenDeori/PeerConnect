@@ -10,6 +10,7 @@ const Layout = () => {
       <Stack.Screen name="track-package" options={{ headerShown: false }} />
       <Stack.Screen name="receive-package" options={{ headerShown: false }} />
       <Stack.Screen name="account-settings" options={{ headerShown: false }} />
+      <Stack.Screen name="track-deliveries" options={{ headerShown: false }} />
     </Stack>
   );
 };

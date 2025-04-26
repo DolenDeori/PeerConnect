@@ -38,5 +38,8 @@ export interface GoogleInputProps {
   containerStyle?: string;
   placeholder?: string;
   textInputBackgroundColor?: string;
-  handlePress: (location: LocationFromGoogle) => void;
+  handlePress: (
+    location: LocationFromGoogle,
+    details: GooglePlaceDetail | null
+  ) => void;
 }

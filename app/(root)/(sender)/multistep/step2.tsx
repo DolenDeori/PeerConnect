@@ -11,17 +11,19 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { ChevronDown, X } from "lucide-react-native";
 import { dropdownOptions } from "@/constant";
-import { useFormStore, useNavigationStore } from "@/store";
-import { useEffect } from "react";
+import { useFormStore } from "@/store";
+import CustomButton from "@/components/customButton";
 
 const Step2 = () => {
   const router = useRouter();
   const { data, updateField } = useFormStore();
-  const { setHandleNext } = useNavigationStore();
 
   const [packageType, setPackageType] = useState(data.packageType ?? "");
   const [packageSize, setPackageSize] = useState(data.packageSize ?? "");
   const [packageWeight, setPackageWeight] = useState(data.packageWeight ?? "");
+  const [packageVisibleWeight, setPackageVisibleWeight] = useState(
+    data.packageWeight ?? ""
+  );
   const [packageContent, setPackageContent] = useState(
     data.packageContent ?? ""
   );
@@ -43,6 +45,9 @@ const Step2 = () => {
       case "packageContent":
         setPackageContent(value);
         break;
+      case "packageDescription":
+        setPackageContent(value);
+        break;
     }
 
     setModalVisible(false);
@@ -50,21 +55,13 @@ const Step2 = () => {
   };
 
   const handleNext = useCallback(() => {
-    console.log("Step 2 → updating form data");
-
     updateField("packageType", packageType);
     updateField("packageSize", packageSize);
     updateField("packageWeight", packageWeight);
     updateField("packageContent", packageContent);
 
-    router.push("/step3");
-  }, []);
-
-  useEffect(() => {
-    setHandleNext(() => handleNext);
-
-    return () => setHandleNext(null);
-  }, [handleNext]);
+    router.push("/multistep/step3");
+  }, [packageType, packageSize, packageWeight, packageContent]);
 
   const CustomDropdown = ({
     label,
@@ -78,9 +75,7 @@ const Step2 = () => {
     dropdownKey: string;
   }) => (
     <View className="mb-6">
-      <Text className="text-lg font-medium mb-2 font-DMSansSemiBold">
-        {label}
-      </Text>
+      <Text className="mb-2 font-DMSansSemiBold">{label}</Text>
       <TouchableOpacity
         className="flex-row items-center justify-between bg-gray-100 rounded-lg p-4"
         onPress={() => {
@@ -100,8 +95,9 @@ const Step2 = () => {
     <SafeAreaView className="flex-1 bg-white p-4">
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="mt-5">
-          <Text className="text-3xl font-HostGorteskBold">Package Details</Text>
-          <Text className="font-DMSansRegular">Enter your package detail</Text>
+          <Text className="text-4xl font-HostGorteskBold">
+            Provide Package Details
+          </Text>
         </View>
 
         <View className="mt-6">
@@ -131,7 +127,9 @@ const Step2 = () => {
           />
         </View>
       </ScrollView>
-
+      <View>
+        <CustomButton title="Next" onPress={handleNext} />
+      </View>
       <Modal
         visible={modalVisible}
         transparent

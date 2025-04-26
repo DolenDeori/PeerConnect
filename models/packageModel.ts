@@ -1,4 +1,5 @@
 export interface PackageModel {
+  travelId: string | number | (string | number)[] | null | undefined;
   id: string;
   senderId: string;
   travelerId?: string;
@@ -9,8 +10,22 @@ export interface PackageModel {
     size: string;
     content: string;
     description?: string;
-    pickupLocation: string;
-    dropoffLocation: string;
+    pickupLocation: {
+      address: string;
+      latitude: number;
+      longitude: number;
+      city?: string;
+      state?: string;
+      zipCode?: string;
+    };
+    deliveryLocation: {
+      address: string;
+      latitude: number;
+      longitude: number;
+      city?: string;
+      state?: string;
+      zipCode?: string;
+    };
   };
   receiverInfo: {
     name: string;
@@ -24,5 +39,9 @@ export interface PackageModel {
     deliveryDate?: string;
     deliveryTime?: string;
   };
+  price: number;
   status: string | "pending" | "in transit" | "delivered"; // e.g., "pending", "in transit", "delivered"
+  createdAt: string; // ISO date string
+  updatedAt?: string;
+  deliveryFee?: number;
 }

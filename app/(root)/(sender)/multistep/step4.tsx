@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFormStore } from "@/store";
@@ -6,9 +6,11 @@ import { useRouter } from "expo-router";
 import { createPackage } from "@/services/packageService";
 import { v4 as uuidv4 } from "uuid";
 import { useUser } from "@clerk/clerk-expo";
+import CustomButton from "@/components/customButton";
+import { create } from "zustand";
 
 const Step4 = () => {
-  const { data } = useFormStore();
+  const { data, resetForm } = useFormStore();
   const { user } = useUser();
   const router = useRouter();
 
@@ -45,21 +47,37 @@ const Step4 = () => {
         size: data.packageSize,
         content: data.packageContent,
         description: data.packageDescription || "",
-        pickupLocation: data.pickupLocation?.address || "",
-        dropoffLocation: data.deliveryLocation?.address || "",
+        pickupLocation: {
+          address: data.pickupLocation?.address || "",
+          latitude: data.pickupLocation?.latitude || 0,
+          longitude: data.pickupLocation?.longitude || 0,
+          city: data.pickupLocation?.city || "",
+          state: data.pickupLocation?.state || "",
+          zipCode: data.pickupLocation?.zipCode || "",
+        },
+        deliveryLocation: {
+          address: data.deliveryLocation?.address || "",
+          latitude: data.deliveryLocation?.latitude || 0,
+          longitude: data.deliveryLocation?.longitude || 0,
+          city: data.deliveryLocation?.city || "",
+          state: data.deliveryLocation?.state || "",
+          zipCode: data.deliveryLocation?.zipCode || "",
+        },
       },
       receiverInfo: {
         name: data.receiverInfo?.name || "",
         phoneNumber: data.receiverInfo?.phone || "",
-        email: data.receiverInfo?.email,
-        alternativePhoneNumber: data.receiverInfo?.alternativePhone,
+        email: data.receiverInfo?.email || "",
+        alternativePhoneNumber: data.receiverInfo?.alternativePhone || "",
       },
+      createdAt: new Date().toISOString(),
     };
 
     try {
       await createPackage(packageModel);
       Alert.alert("Success", "Package created successfully!");
-      router.push("/track-package"); // Navigate to a confirmation screen or reset
+      resetForm(); // Reset the form data in the store
+      router.replace("/track-package"); // Navigate to a confirmation screen or reset
     } catch (error) {
       Alert.alert("Error", "Something went wrong while creating the package.");
       console.error(error);
@@ -102,7 +120,7 @@ const Step4 = () => {
 
         <DetailGroup
           title="Package Details"
-          onEdit={() => router.push("/step2")}
+          onEdit={() => router.push("/multistep/step2")}
           details={[
             { label: "Type", value: data.packageType },
             { label: "Size", value: data.packageSize },
@@ -114,7 +132,7 @@ const Step4 = () => {
 
         <DetailGroup
           title="Pickup & Dropoff"
-          onEdit={() => router.push("/step1")}
+          onEdit={() => router.push("/multistep/step1")}
           details={[
             { label: "Pickup", value: data.pickupLocation?.address },
             { label: "Dropoff", value: data.deliveryLocation?.address },
@@ -123,7 +141,7 @@ const Step4 = () => {
 
         <DetailGroup
           title="Receiver Info"
-          onEdit={() => router.push("/step3")}
+          onEdit={() => router.push("/multistep/step3")}
           details={[
             { label: "Name", value: data.receiverInfo?.name },
             { label: "Phone", value: data.receiverInfo?.phone },
@@ -132,6 +150,9 @@ const Step4 = () => {
           ]}
         />
       </ScrollView>
+      <View>
+        <CustomButton title="Submit" onPress={handleSubmit} />
+      </View>
     </SafeAreaView>
   );
 };

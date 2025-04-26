@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -8,20 +8,15 @@ import {
   Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  deleteDoc,
-  doc,
-} from "firebase/firestore";
-import { db } from "@/firebaseConfig";
 import { useUser } from "@clerk/clerk-expo";
 import { ChevronLeft } from "lucide-react-native";
 import { router } from "expo-router";
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
 import { timeAgo } from "@/utils/utils";
 import CustomButton from "@/components/customButton";
+import { getPackagesByUserId } from "@/services/packageService"; // ✅ use service
+import { PackageModel } from "@/models/packageModel"; // ✅ your package interface
 
 const deleteItem = async (itemId: string): Promise<void> => {
   try {
@@ -34,44 +29,26 @@ const deleteItem = async (itemId: string): Promise<void> => {
 
 const TrackPackage = () => {
   const { user } = useUser();
-  const [packages, setPackages] = useState<any[]>([]);
+  const [packages, setPackages] = useState<PackageModel[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
+  const fetchPackages = async () => {
+    if (!user || !user.id) return;
+
+    setLoading(true);
+    try {
+      const data = await getPackagesByUserId(user.id);
+      setPackages(data);
+    } catch (error) {
+      console.error("Error fetching packages:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchPackages = async () => {
-      if (!user || !user.id) {
-        setLoading(false);
-        return;
-      }
-      try {
-        // Create a query to fetch packages for the current user
-        const q = query(
-          collection(db, "packages"),
-          where("userId", "==", user.id)
-        );
-        const querySnapshot = await getDocs(q);
-        const packagesData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setPackages(packagesData);
-      } catch (error) {
-        console.error("Error fetching packages: ", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchPackages();
-  }, [user, packages]);
-
-  if (loading) {
-    return (
-      <SafeAreaView className="flex-1 justify-center items-center bg-white">
-        <ActivityIndicator size="large" color="#0000ff" />
-      </SafeAreaView>
-    );
-  }
+  }, [user]);
 
   const handleDelete = (packageId: string) => {
     Alert.alert(
@@ -81,12 +58,27 @@ const TrackPackage = () => {
         { text: "Cancel", style: "cancel" },
         {
           text: "Delete",
-          onPress: () => deleteItem(packageId),
+          onPress: async () => {
+            await deleteItem(packageId);
+            fetchPackages(); // ✅ Refresh list after deletion
+          },
           style: "destructive",
         },
       ]
     );
   };
+
+  const handleEdit = (packageId: string) => {
+    // router.push(`/edit-package/${packageId}`); // ✅ Assumes you have a dynamic route to edit
+  };
+
+  if (loading) {
+    return (
+      <SafeAreaView className="flex-1 justify-center items-center bg-white">
+        <ActivityIndicator size="large" color="#0000ff" />
+      </SafeAreaView>
+    );
+  }
 
   if (packages.length === 0) {
     return (
@@ -104,40 +96,54 @@ const TrackPackage = () => {
           <Text>Back</Text>
         </View>
       </TouchableOpacity>
-      <View className="mt-5">
-        <Text className="text-3xl font-HostGorteskBold">My Packages</Text>
+
+      <View className="mt-4">
+        <Text className="text-4xl font-HostGorteskBold">My Packages</Text>
       </View>
+
       <FlatList
         data={packages}
         className="mt-4"
+        showsVerticalScrollIndicator={false}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View className="border-b">
+          <View className="border-b py-4">
             <Text className="text-lg font-DMSansSemiBold">
-              {item.packageDetails?.packageType || "Package"}
+              {item.packageInfo?.type || "Package"}
             </Text>
             <Text className="font-DMSansRegular">
-              {item.locationInfo?.pickupPoint} →{" "}
-              {item.locationInfo?.deliveryPoint}
+              {item.packageInfo?.pickupLocation?.city} →{" "}
+              {item.packageInfo?.deliveryLocation?.city}
             </Text>
-            {/* Render other package fields as needed */}
-            <Text>
+
+            <Text className="mt-1 font-DMSansRegular text-gray-500">
+              Content: {item.packageInfo?.content}
+            </Text>
+
+            <Text className="mt-1 font-DMSansRegular">
               Status:{" "}
-              <Text className="text-yellow-200 font-DMSansSemiBold">
-                Pending
+              <Text className="text-yellow-500 font-DMSansSemiBold">
+                {item.status}
               </Text>
             </Text>
-            <View className="flex-row items-center">
-              <Text className="mt-2 font-DMSansRegular text-sm text-gray-500">
-                Item Listed: {timeAgo(item.createdAt)}
-              </Text>
-            </View>
-            <View className="flex-row mt-4">
+
+            <Text className="mt-1 font-DMSansRegular text-sm text-gray-500">
+              Item Listed: {timeAgo(item.createdAt || new Date())}
+            </Text>
+
+            <View className="flex-row gap-3 mt-4">
               <CustomButton
-                title="Delete Item"
+                title="Delete"
                 bgVariant="danger"
                 onPress={() => handleDelete(item.id)}
               />
+              {item.status === "pending" && (
+                <CustomButton
+                  title="Edit"
+                  bgVariant="primary"
+                  onPress={() => handleEdit(item.id)}
+                />
+              )}
             </View>
           </View>
         )}

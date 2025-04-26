@@ -78,20 +78,15 @@ export const dropdownOptions = {
     { label: "Large (up to 100x100x100 cm)", value: "large" },
   ],
   packageWeight: [
-    { label: "Light (1-5 kg)", value: "1-5" },
-    { label: "Medium (5-10 kg)", value: "5-10" },
-    { label: "Heavy (10-20 kg)", value: "10-20" },
+    { label: "Light (1-5 kg)", value: "5" },
+    { label: "Medium (5-10 kg)", value: "10" },
+    { label: "Heavy (10-20 kg)", value: "20" },
   ],
   packageContent: [
     { label: "Clothes", value: "clothes" },
     { label: "Electronics", value: "electronics" },
     { label: "Documents", value: "documents" },
     { label: "Books", value: "books" },
-  ],
-  waitingPeriod: [
-    { label: "1-2 days", value: "1-2" },
-    { label: "3-5 days", value: "3-5" },
-    { label: "1 week", value: "7" },
   ],
 };
 
@@ -133,7 +128,7 @@ export const homeMenuItems = [
     title: "My Deliveries",
     subtitle: "See your listed deliveries",
     icon: my_delivery,
-    url: "/(root)/(sender)/multistep/step1",
+    url: "/(root)/track-deliveries",
   },
 ];
 

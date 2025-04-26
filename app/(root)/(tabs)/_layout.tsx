@@ -54,24 +54,6 @@ const Layout: React.FC = () => {
         }}
       />
       <Tabs.Screen
-        name="package"
-        options={{
-          title: "Packages",
-          headerShown: false,
-          tabBarButton: (props) => (
-            <TouchableOpacity {...props} activeOpacity={1} />
-          ),
-          tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused}>
-              <Package
-                color={focused ? "#3b82f6" : "black"}
-                className={`${focused ? " color-blue-500" : "color-black"}`}
-              />
-            </TabIcon>
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="profile"
         options={{
           title: "Profile",

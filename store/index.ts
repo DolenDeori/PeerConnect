@@ -1,5 +1,16 @@
 import { create } from "zustand";
 
+interface NavigationStore {
+  handleNext: (() => void) | null;
+  setHandleNext: (fn: (() => void) | null) => void;
+}
+
+export const useNavigationStore = create<NavigationStore>((set) => ({
+  handleNext: null,
+  setHandleNext: (fn) => set({ handleNext: fn }),
+}));
+``;
+
 interface LocationInfo {
   longitude?: number;
   latitude?: number;

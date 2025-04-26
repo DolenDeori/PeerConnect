@@ -10,6 +10,9 @@ import {
   deleteDoc,
   query,
   where,
+  orderBy,
+  limit,
+  startAfter,
 } from "firebase/firestore";
 import { PackageModel } from "@/models/packageModel";
 
@@ -76,4 +79,59 @@ export const getPackagesByTravelerId = async (
     packages.push({ id: doc.id, ...doc.data() } as PackageModel);
   });
   return packages;
+};
+
+// get all available packages (not assigned to any traveler yet)
+export const getAllAvailablePackages = async (): Promise<PackageModel[]> => {
+  const q = query(packageCollection, where("status", "==", "pending")); // or however you tag them
+  const querySnapshot = await getDocs(q);
+
+  const packages: PackageModel[] = [];
+  querySnapshot.forEach((doc) => {
+    packages.push({ id: doc.id, ...doc.data() } as PackageModel);
+  });
+
+  return packages;
+};
+
+// fetch paginated available packages
+export const getPaginatedAvailablePackages = async (
+  lastDoc: any = null,
+  limitCount = 5
+): Promise<{ packages: PackageModel[]; lastVisible: any }> => {
+  let q = query(
+    packageCollection,
+    where("status", "==", "pending"),
+    // ensure you're ordering by a field that exists in all docs
+    // 'createdAt' should be a Firestore timestamp
+    orderBy("createdAt", "desc"),
+    limit(limitCount)
+  );
+
+  if (lastDoc) {
+    q = query(q, startAfter(lastDoc));
+  }
+
+  const querySnapshot = await getDocs(q);
+  const packages: PackageModel[] = [];
+
+  querySnapshot.forEach((doc) => {
+    packages.push({ id: doc.id, ...doc.data() } as PackageModel);
+  });
+
+  const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+  return { packages, lastVisible };
+};
+
+export const confirmPackageDelivery = async (
+  packageId: string,
+  travelerId: string
+) => {
+  const packageRef = doc(db, "packages", packageId);
+  await updateDoc(packageRef, {
+    status: "in_transit",
+    travelerId: travelerId,
+    confirmedAt: new Date(),
+  });
 };

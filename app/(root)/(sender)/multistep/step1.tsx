@@ -1,42 +1,82 @@
-import { View, Text } from "react-native";
-import React, { useCallback, useEffect } from "react";
+// Step1.tsx
+import CustomButton from "@/components/customButton";
 import GoogleTextInput from "@/components/googleTextInput";
-import { useFormStore } from "@/store";
 import { LocationFromGoogle } from "@/types/type";
 import { router } from "expo-router";
-import { useNavigationStore } from "@/store";
+import { Text, View, TouchableOpacity } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useFormStore } from "@/store";
 
 const Step1 = () => {
-  const { setHandleNext } = useNavigationStore();
+  const handleNext = () => {
+    router.push("/multistep/step2");
+  };
   const updatePickupLocation = useFormStore(
     (state) => state.updatePickupLocation
   );
-  const pickupLocation = useFormStore((state) => state.data.pickupLocation);
+  const updateDeliveryLocation = useFormStore(
+    (state) => state.updateDeliveryLocation
+  );
 
-  const handleNext = useCallback(() => {
-    console.log("Step 1 → updating form data");
-    updatePickupLocation(pickupLocation as LocationFromGoogle);
-    router.push("/step2");
-  }, []);
+  const handlePickupLocationSelect = (
+    location: LocationFromGoogle,
+    details: any
+  ) => {
+    const components = details?.address_components || [];
+    const getComponent = (type: string) =>
+      components.find((comp: any) => comp.types.includes(type))?.long_name;
 
-  useEffect(() => {
-    setHandleNext(() => handleNext); // set the handleNext function in the store
+    updatePickupLocation({
+      address: location.address,
+      latitude: location.latitude,
+      longitude: location.longitude,
+      city: getComponent("locality"),
+      state: getComponent("administrative_area_level_1"),
+      zipCode: getComponent("postal_code"),
+    });
+  };
 
-    return () => {
-      setHandleNext(null); // clean up the handleNext function when the component unmounts
-    };
-  }, [handleNext]);
+  const handleDeliveryLocationSelect = (
+    location: LocationFromGoogle,
+    details: any
+  ) => {
+    const components = details?.address_components || [];
+    const getComponent = (type: string) =>
+      components.find((comp: any) => comp.types.includes(type))?.long_name;
 
+    updateDeliveryLocation({
+      address: location.address,
+      latitude: location.latitude,
+      longitude: location.longitude,
+      city: getComponent("locality"),
+      state: getComponent("administrative_area_level_1"),
+      zipCode: getComponent("postal_code"),
+    });
+  };
   return (
-    <View className="flex-1 p-4 bg-white">
-      <Text>Thi is sender page</Text>
-      <GoogleTextInput
-        placeholder="Choose pick up locations"
-        handlePress={(location) => {
-          updatePickupLocation(location);
-        }}
-      />
-    </View>
+    <SafeAreaView className="flex-1 bg-white">
+      <View className="flex-1 bg-white p-4">
+        <Text className="text-4xl font-HostGorteskBold">
+          Provide Location Information
+        </Text>
+
+        {/* Pickup Location Section */}
+        <View className="mt-6 gap-y-4">
+          <GoogleTextInput
+            placeholder="Search Your Pickup Location.."
+            handlePress={handlePickupLocationSelect}
+          />
+          <GoogleTextInput
+            placeholder="Search You Delivery Location.."
+            handlePress={handleDeliveryLocationSelect}
+          />
+        </View>
+      </View>
+
+      <View className="p-4 bg-white">
+        <CustomButton title="Next" onPress={handleNext} />
+      </View>
+    </SafeAreaView>
   );
 };
 

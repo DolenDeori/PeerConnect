@@ -1,15 +1,10 @@
-import React, { useState, useEffect } from "react";
-import {
-  Text,
-  View,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import { Text, View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputField from "@/components/inputField";
 import { useFormStore } from "@/store";
 import { useRouter } from "expo-router";
+import CustomButton from "@/components/customButton";
 
 const Step3 = () => {
   const router = useRouter();
@@ -27,9 +22,9 @@ const Step3 = () => {
     updateReceiverInfo({ [field]: value });
   };
 
-  const handleNext = () => {
-    router.push("/senderForm/step4");
-  };
+  const handleNext = useCallback(() => {
+    router.push("/multistep/step4");
+  }, []);
 
   return (
     <SafeAreaView className="flex-1 p-4 bg-white">
@@ -75,6 +70,9 @@ const Step3 = () => {
           />
         </View>
       </ScrollView>
+      <View>
+        <CustomButton title="Next" onPress={handleNext} />
+      </View>
     </SafeAreaView>
   );
 };
