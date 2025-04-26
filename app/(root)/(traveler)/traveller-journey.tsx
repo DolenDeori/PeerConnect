@@ -15,6 +15,7 @@ import { useRef } from "react";
 import { TravelModel } from "@/models/travelModel";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ChevronLeft } from "lucide-react-native";
+import { GOOGLE_MAPS_API_KEY } from '@env';
 
 const TravelerJourney = () => {
   const { travelId, destLat, destLng, packageId } = useLocalSearchParams();
@@ -145,8 +146,11 @@ const TravelerJourney = () => {
       if (!location) return;
 
       try {
-        const apiKey = "AIzaSyDeuCTcdoEcvShgX4R8AayDxvUiHIdn8X4"; // Replace with your API key
-        const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${packagePickupLocation?.latitude},${packagePickupLocation?.longitude}&destination=${packageDeliveryLocation?.latitude},${packageDeliveryLocation?.longitude}&key=${apiKey}`;
+        if (!GOOGLE_MAPS_API_KEY) {
+          console.error("Google Maps API key is not configured");
+          return;
+        }
+        const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${packagePickupLocation?.latitude},${packagePickupLocation?.longitude}&destination=${packageDeliveryLocation?.latitude},${packageDeliveryLocation?.longitude}&key=${GOOGLE_MAPS_API_KEY}`;
 
         const response = await axios.get(url);
 

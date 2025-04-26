@@ -96,7 +96,9 @@ const Home = () => {
         </View>
         <View className="flex-row gap-6 items-center">
           <MessageCircleQuestion color={"black"} size={22} />
-          <BellIcon color={"black"} size={22} />
+          <TouchableOpacity onPress={() => router.push("/(root)/notification")}>
+            <BellIcon color={"black"} size={22} />
+          </TouchableOpacity>
         </View>
       </View>
 

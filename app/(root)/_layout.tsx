@@ -11,6 +11,7 @@ const Layout = () => {
       <Stack.Screen name="receive-package" options={{ headerShown: false }} />
       <Stack.Screen name="account-settings" options={{ headerShown: false }} />
       <Stack.Screen name="track-deliveries" options={{ headerShown: false }} />
+      <Stack.Screen name="notification" options={{ headerShown: false }} />
     </Stack>
   );
 };

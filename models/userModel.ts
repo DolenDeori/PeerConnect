@@ -8,4 +8,5 @@ export interface User {
   phoneNumber?: string;
   userProfile?: string;
   createdAt: string;
+  pushToken?: string;
 }

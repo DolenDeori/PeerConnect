@@ -7,7 +7,10 @@ import { createPackage } from "@/services/packageService";
 import { v4 as uuidv4 } from "uuid";
 import { useUser } from "@clerk/clerk-expo";
 import CustomButton from "@/components/customButton";
-import { create } from "zustand";
+import { PackageModel } from "@/models/packageModel";
+import * as Notifications from 'expo-notifications';
+import { addDoc, collection, serverTimestamp, deleteDoc } from 'firebase/firestore';
+import { db } from '@/firebaseConfig';
 
 const Step4 = () => {
   const { data, resetForm } = useFormStore();
@@ -74,10 +77,32 @@ const Step4 = () => {
     };
 
     try {
-      await createPackage(packageModel);
+      await createPackage(packageModel as PackageModel);
       Alert.alert("Success", "Package created successfully!");
       resetForm(); // Reset the form data in the store
       router.replace("/track-package"); // Navigate to a confirmation screen or reset
+
+      if (user?.id) {
+        // 1. Add notification to Firestore
+        await addDoc(collection(db, 'notifications'), {
+          userId: user.id,
+          title: 'Package Uploaded',
+          body: 'Your package has been uploaded successfully.',
+          data: { /* you can add packageId or other info here */ },
+          createdAt: serverTimestamp(),
+          read: false,
+        });
+
+        // 2. Send a local notification
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: 'Package Uploaded',
+            body: 'Your package has been uploaded successfully.',
+            data: { /* you can add packageId or other info here */ },
+          },
+          trigger: null, // send immediately
+        });
+      }
     } catch (error) {
       Alert.alert("Error", "Something went wrong while creating the package.");
       console.error(error);
