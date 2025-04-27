@@ -11,6 +11,8 @@ import send_package from "@/assets/icons/send_package.png";
 import traveling_package from "@/assets/icons/traveling_package.png";
 import my_package from "@/assets/icons/my_package.png";
 import my_delivery from "@/assets/icons/my_delivery.png";
+import delivery_pin from "@/assets/icons/delivery_pin_icon.png";
+import pickup_pin from "@/assets/icons/pickup_pin_icon.png";
 
 import {
   Package,
@@ -29,6 +31,8 @@ export const icons = {
   send_package,
   traveling_package,
   my_package,
+  delivery_pin,
+  pickup_pin,
 };
 
 export const images = {

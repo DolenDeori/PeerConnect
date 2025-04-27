@@ -8,25 +8,29 @@ import {
   Dimensions,
   Pressable,
 } from "react-native";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BellIcon, Menu, MessageCircleQuestion, X } from "lucide-react-native";
 import ImageCarousel from "@/components/ImageCarousel";
-import CustomButton from "@/components/customButton";
 import { homeMenuItems, homeSidebarMenuLinks } from "@/constant";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
-import BottomSheet from "@gorhom/bottom-sheet";
+import { db } from '@/firebaseConfig';
+import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import { useUser } from '@clerk/clerk-expo';
 
 const screenWidth = Dimensions.get("window").width;
 
 const Home = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const sidebarX = useSharedValue(-screenWidth);
+  const router = useRouter();
+  const { user } = useUser();
+  const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
 
   const toggleSidebar = (open: boolean) => {
     setIsSidebarOpen(open);
@@ -36,6 +40,22 @@ const Home = () => {
   const sidebarStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: sidebarX.value }],
   }));
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const q = query(
+      collection(db, 'notifications'),
+      where('userId', '==', user.id),
+      where('read', '==', false)
+    );
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      setHasUnreadNotifications(!querySnapshot.empty);
+    });
+
+    return () => unsubscribe();
+  }, [user?.id]);
 
   return (
     <SafeAreaView className="flex-1 bg-gray-100">
@@ -96,8 +116,14 @@ const Home = () => {
         </View>
         <View className="flex-row gap-6 items-center">
           <MessageCircleQuestion color={"black"} size={22} />
-          <TouchableOpacity onPress={() => router.push("/(root)/notification")}>
+          <TouchableOpacity
+            onPress={() => router.push("/(root)/notification")}
+            className="relative"
+          >
             <BellIcon color={"black"} size={22} />
+            {hasUnreadNotifications && (
+              <View className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" />
+            )}
           </TouchableOpacity>
         </View>
       </View>
