@@ -8,7 +8,7 @@ export const sendNotification = async (
   data: any = {}
 ) => {
   try {
-    // Get the user's push token from Firestore
+    // Get the user's push tokens from Firestore
     const userRef = doc(db, 'users', userId);
     const userDoc = await getDoc(userRef);
 
@@ -18,16 +18,16 @@ export const sendNotification = async (
     }
 
     const userData = userDoc.data();
-    const pushToken = userData.pushToken;
+    const pushTokens = userData.pushTokens || [];
 
-    if (!pushToken) {
-      console.error('No push token found for user');
+    if (pushTokens.length === 0) {
+      console.error('No push tokens found for user');
       return;
     }
 
-    // Send the notification using Expo's push notification service
+    // Send the notification to all registered devices
     const message = {
-      to: pushToken,
+      to: pushTokens,
       sound: 'default',
       title,
       body,
@@ -44,7 +44,7 @@ export const sendNotification = async (
       body: JSON.stringify(message),
     });
 
-    console.log('Notification sent successfully');
+    console.log('Notification sent successfully to all devices');
   } catch (error) {
     console.error('Error sending notification:', error);
   }
