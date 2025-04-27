@@ -15,6 +15,9 @@ import {
 } from "@/utils/priceCalculator"; // adjust path if needed
 import { calculateDistanceKm } from "@/utils/distanceUtils";
 import { createTravel } from "@/services/travelService";
+import { addDoc, collection, serverTimestamp, getDoc, doc as firestoreDoc } from 'firebase/firestore';
+import { db } from '@/firebaseConfig';
+import * as Notifications from 'expo-notifications';
 
 const TravellerStep3 = () => {
   const { user } = useUser();
@@ -153,9 +156,84 @@ const TravellerStep3 = () => {
         travelStatus: "pending",
       });
 
-      console.log("✅ Travel created with ID:", travelId);
+      // 3. Add a notification to Firestore for the sender
+      await addDoc(collection(db, 'notifications'), {
+        userId: packageDetails.senderId, // The sender's user ID
+        title: 'Package Accepted by Traveler',
+        body: `Your package (${packageDetails.trackingNumber}) has been accepted and is now in progress.`,
+        data: { packageId: selectedPackageId, status: 'in progress' },
+        createdAt: serverTimestamp(),
+        read: false,
+      });
 
-      // 3. Navigate to the next screen with travelId
+      // 4. Send a push notification to the sender (if they have a pushToken)
+      // Fetch the sender's user document
+      const senderRef = firestoreDoc(db, 'users', packageDetails.senderId);
+      const senderSnap = await getDoc(senderRef);
+
+      if (senderSnap.exists()) {
+        const senderData = senderSnap.data();
+        const pushTokens = senderData.pushTokens || [];
+
+        if (pushTokens.length > 0) {
+          try {
+            console.log('Sending notification to sender with tokens:', pushTokens);
+
+            // Add notification to Firestore for persistence
+            await addDoc(collection(db, 'notifications'), {
+              userId: packageDetails.senderId,
+              title: 'Package Accepted by Traveler',
+              body: `Your package (${packageDetails.trackingNumber}) has been accepted and is now in progress.`,
+              data: {
+                packageId: selectedPackageId,
+                status: 'in_progress',
+                trackingNumber: packageDetails.trackingNumber,
+                travelerId: user?.id,
+                createdAt: serverTimestamp()
+              },
+              createdAt: serverTimestamp(),
+              read: false,
+            });
+
+            // Send push notification to all of sender's devices
+            const message = {
+              to: pushTokens,
+              sound: 'default',
+              title: 'Package Accepted by Traveler',
+              body: `Your package (${packageDetails.trackingNumber}) has been accepted and is now in progress.`,
+              data: {
+                packageId: selectedPackageId,
+                status: 'in_progress',
+                trackingNumber: packageDetails.trackingNumber,
+                travelerId: user?.id
+              },
+            };
+
+            const response = await fetch('https://exp.host/--/api/v2/push/send', {
+              method: 'POST',
+              headers: {
+                Accept: 'application/json',
+                'Accept-encoding': 'gzip, deflate',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(message),
+            });
+
+            const result = await response.json();
+            console.log('Push notification sent successfully:', result);
+
+          } catch (error) {
+            console.error('Error sending notification:', error);
+            // Continue with the flow even if notification fails
+          }
+        } else {
+          console.log('Sender has no push tokens registered');
+        }
+      } else {
+        console.error('Sender document not found');
+      }
+
+      // 5. Navigate to the next screen with travelId
       router.push({
         pathname: "/traveller-journey",
         params: {

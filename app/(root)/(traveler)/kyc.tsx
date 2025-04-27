@@ -19,13 +19,13 @@ const Kyc = () => {
           KYC not done
         </Text>
         <Text className="font-DMSansRegular text-white">
-          To Proceed Please provide your KY Infor
+          To Proceed Please provide your KYC Information
         </Text>
         <View className="mt-8">
           <CustomButton
             title="Start my KYC"
             bgVariant="outline"
-            onPress={() => router.push("/(root)/(kyc)/kyc-form")}
+            onPress={() => router.push("/(root)/(kyc)/(multistep)/step1")}
           />
         </View>
       </View>

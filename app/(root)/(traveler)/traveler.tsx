@@ -18,18 +18,21 @@ const TravellerRoot = () => {
         return;
       }
       try {
-        const userDocRef = doc(db, "users", user.id);
-        const userSnap = await getDoc(userDocRef);
-        if (userSnap.exists()) {
-          const userData = userSnap.data();
-          // Assume valid KYC means a truthy value at userData.kyc?.isValid
-          if (!userData.kyc || !userData.kyc.isValid) {
-            router.replace("/kyc"); // Redirect to KYC flow if not valid
-          } else {
-            router.replace("/step1");
-          }
+        const kycDocRef = doc(db, "kyc", user.id);
+        const kycSnap = await getDoc(kycDocRef);
+        if (!kycSnap.exists()) {
+          // No KYC record, start KYC process
+          router.replace("/(root)/(kyc)/(multistep)/step1");
         } else {
-          Alert.alert("Error", "User data not found");
+          const kycData = kycSnap.data();
+          if (kycData.status === "approved") {
+            router.replace("/step1");
+          } else if (kycData.status === "pending" || kycData.status === "rejected") {
+            router.replace({
+              pathname: "/kyc-pending",
+              params: { status: kycData.status }
+            });
+          }
         }
       } catch (error: any) {
         Alert.alert("Error", error.message);

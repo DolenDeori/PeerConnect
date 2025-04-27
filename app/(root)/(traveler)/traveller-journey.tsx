@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Alert, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Alert, TouchableOpacity, ScrollView, Image } from "react-native";
 import MapView, { Marker, Circle, Polyline } from "react-native-maps";
 import * as Location from "expo-location";
-import { doc, updateDoc, arrayUnion, getDoc } from "firebase/firestore";
-import { db } from "@/firebaseConfig"; // adjust path if needed
+import { doc, updateDoc, arrayUnion, getDoc} from "firebase/firestore";
+import { db } from "@/firebaseConfig";
 import { router, useLocalSearchParams } from "expo-router";
-import axios from "axios"; // we'll use axios to call Directions API
+import axios from "axios";
 import BottomSheet from "@gorhom/bottom-sheet";
-import {
-  GestureHandlerRootView,
-  ScrollView,
-} from "react-native-gesture-handler";
 import { useRef } from "react";
 import { TravelModel } from "@/models/travelModel";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ChevronLeft } from "lucide-react-native";
 import { GOOGLE_MAPS_API_KEY } from '@env';
+import { PackageModel } from "@/models/packageModel";
+import CustomButton from "@/components/customButton";
+import { updateTravelStatus } from "@/services/travelService";
+import { sendNotification } from "@/utils/sendNotification";
+import { icons } from "@/constant";
 
 const TravelerJourney = () => {
   const { travelId, destLat, destLng, packageId } = useLocalSearchParams();
@@ -37,6 +38,9 @@ const TravelerJourney = () => {
     latitude: number;
     longitude: number;
   } | null>(null);
+  const [packageDetails, setPackageDetails] = useState<PackageModel | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [senderInfo, setSenderInfo] = useState<any>(null);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [travelData, setTravelData] = useState<TravelModel | null>(null);
@@ -62,7 +66,7 @@ const TravelerJourney = () => {
           latitude: location?.latitude || 0,
           longitude: location?.longitude || 0,
         };
-        const timestamp = new Date().toISOString(); // Declare and initialize timestamp
+        const timestamp = new Date().toISOString();
         await updateDoc(travelRef, {
           currentLocation: coords,
           locationUpdates: arrayUnion({
@@ -115,7 +119,18 @@ const TravelerJourney = () => {
         const packageRef = doc(db, "packages", packageId as string);
         const packageSnapshot = await getDoc(packageRef);
         if (packageSnapshot.exists()) {
-          const packageData = packageSnapshot.data();
+          const packageData = packageSnapshot.data() as PackageModel;
+          setPackageDetails(packageData);
+
+          // Fetch sender info right after we get package details
+          if (packageData.senderId) {
+            const senderRef = doc(db, "users", packageData.senderId);
+            const senderSnap = await getDoc(senderRef);
+            if (senderSnap.exists()) {
+              setSenderInfo(senderSnap.data());
+            }
+          }
+
           const deliveryLoc = packageData.packageInfo.deliveryLocation;
           const pickupLoc = packageData.packageInfo.pickupLocation;
 
@@ -133,12 +148,14 @@ const TravelerJourney = () => {
         }
       } catch (error) {
         console.error("Failed to fetch package delivery location:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     startLocationUpdates();
     fetchPackageDetails();
-  }, []);
+  }, [packageId]);
 
   // Fetch route from current location to destination
   useEffect(() => {
@@ -170,102 +187,191 @@ const TravelerJourney = () => {
     fetchRoute();
   }, [location]);
 
+  const handleStartJourney = async () => {
+    if (!travelId || !packageId || !packageDetails) return;
+
+    try {
+      // Update package status
+      await updateDoc(doc(db, "packages", packageId as string), {
+        status: "in_transit",
+      });
+
+      // Update travel status
+      await updateTravelStatus(travelId as string, "in-progress");
+
+      // Send notification to sender
+      await sendNotification(
+        packageDetails.senderId,
+        "Package In Transit",
+        `Your package (${packageDetails.trackingNumber}) is now in transit.`,
+        {
+          type: "package_update",
+          packageId: packageId,
+          status: "in_transit",
+          trackingNumber: packageDetails.trackingNumber
+        }
+      );
+
+      Alert.alert("Success", "Journey started successfully!");
+    } catch (error) {
+      console.error("Error starting journey:", error);
+      Alert.alert("Error", "Failed to start journey. Please try again.");
+    }
+  };
+
   if (errorMsg) {
     return <Text style={styles.error}>{errorMsg}</Text>;
   }
 
+  if (loading) {
+    return (
+      <SafeAreaView className="flex-1 bg-white p-4">
+        <View className="flex-1 justify-center items-center">
+          <Text className="text-lg">Loading journey details...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
-    <SafeAreaView className="flex-1 bg-white p-4">
-      <View>
-        <TouchableOpacity className="flex-row items-center mb-4 gap-1">
-          <ChevronLeft
-            size={24}
-            color="black"
-            onPress={() => router.push("/")}
-          />
-          <Text>Back</Text>
-        </TouchableOpacity>
-      </View>
-      <View>
-        <TouchableOpacity className="flex-row items-center mb-4 gap-1">
-          <Text className="text-xl font-HostGorteskBold">
-            Your Travel Details
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View className=" bg-black rounded-xl overflow-hidden">
-        {location ? (
-          <MapView
-            style={styles.map}
-            initialRegion={{
-              ...location,
-              latitudeDelta: 0.1,
-              longitudeDelta: 0.1,
-            }}
-            showsUserLocation={true}
-            showsMyLocationButton={true}
+    <SafeAreaView className="flex-1 bg-white">
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {/* Header */}
+        <View className="p-4">
+          <TouchableOpacity
+            className="flex-row items-center mb-4 gap-1"
+            onPress={() => router.back()}
           >
-            {/* Current location marker */}
-            <Marker coordinate={location} title="You" />
+            <ChevronLeft size={24} color="black" />
+            <Text>Back</Text>
+          </TouchableOpacity>
+          <Text className="text-xl font-HostGorteskBold mb-4">Your Journey Details</Text>
+        </View>
 
-            {/* Destination marker */}
-            <Marker
-              coordinate={{
-                latitude: Number(destLat),
-                longitude: Number(destLng),
+        {/* Map View */}
+        <View className="h-80 bg-black rounded-xl overflow-hidden mx-4">
+          {location ? (
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                ...location,
+                latitudeDelta: 0.1,
+                longitudeDelta: 0.1,
               }}
-              title="Destination"
-              pinColor="green"
-            />
+              showsUserLocation={true}
+              showsMyLocationButton={true}
+            >
+              {/* Current location marker */}
+              <Marker coordinate={location} title="You" />
 
-            {/* Package Delivery Location marker + 300m circle */}
-            {packageDeliveryLocation && (
-              <>
-                <Marker
-                  coordinate={packageDeliveryLocation}
-                  title="Package Delivery Location"
-                  pinColor="orange"
-                />
-                <Circle
-                  center={packageDeliveryLocation}
-                  radius={300}
-                  strokeColor="rgba(255,165,0,0.8)"
-                  fillColor="rgba(255,165,0,0.3)"
-                />
-              </>
-            )}
+              {/* Package Delivery Location marker + 300m circle */}
+              {packageDeliveryLocation && (
+                <>
+                  <Marker
+                    coordinate={packageDeliveryLocation}
+                    title="Package Delivery Location"
+                  >
+                    <Image
+                      source={icons.delivery_pin}
+                      style={{ width: 40, height: 40 }}
+                      resizeMode="contain"
+                    />
+                  </Marker>
+                  <Circle
+                    center={packageDeliveryLocation}
+                    radius={300}
+                    strokeColor="rgba(255,165,0,0.8)"
+                    fillColor="rgba(255,165,0,0.3)"
+                  />
+                </>
+              )}
 
-            {packagePickupLocation && (
-              <>
-                <Marker
-                  coordinate={packagePickupLocation}
-                  title="Package Pickup Location"
-                  pinColor="purple"
-                />
-                <Circle
-                  center={packagePickupLocation}
-                  radius={300}
-                  strokeColor="rgba(128,0,128,0.8)" // purple
-                  fillColor="rgba(128,0,128,0.3)"
-                />
-              </>
-            )}
+              {packagePickupLocation && (
+                <>
+                  <Marker
+                    coordinate={packagePickupLocation}
+                    title="Package Pickup Location"
+                  >
+                    <Image
+                      source={icons.pickup_pin}
+                      style={{ width: 40, height: 40 }}
+                      resizeMode="contain"
+                    />
+                  </Marker>
+                  <Circle
+                    center={packagePickupLocation}
+                    radius={300}
+                    strokeColor="rgba(128,0,128,0.8)"
+                    fillColor="rgba(128,0,128,0.3)"
+                  />
+                </>
+              )}
 
-            {/* Draw route polyline */}
-            {routeCoords.length > 0 && (
-              <Polyline
-                coordinates={routeCoords}
-                strokeWidth={4}
-                strokeColor="#FF6347" // To mato color for the polyline
-              />
+              {/* Draw route polyline */}
+              {routeCoords.length > 0 && (
+                <Polyline
+                  coordinates={routeCoords}
+                  strokeWidth={4}
+                  strokeColor="#FF6347"
+                />
+              )}
+            </MapView>
+          ) : (
+            <View className="flex-1 justify-center items-center">
+              <Text className="text-white">Loading map...</Text>
+            </View>
+          )}
+        </View>
+
+        {/* Package Details */}
+        <View className="p-4">
+          <Text className="text-lg font-HostGorteskBold mb-4">Package Information</Text>
+
+          <View className="bg-gray-50 p-4 rounded-xl mb-4">
+            <Text className="font-semibold mb-2">Package Details</Text>
+            <Text>Type: {packageDetails?.packageInfo.type}</Text>
+            <Text>Size: {packageDetails?.packageInfo.size}</Text>
+            <Text>Weight: {packageDetails?.packageInfo.weight}</Text>
+            <Text>Content: {packageDetails?.packageInfo.content}</Text>
+            {packageDetails?.packageInfo.description && (
+              <Text>Description: {packageDetails.packageInfo.description}</Text>
             )}
-          </MapView>
-        ) : (
-          <View style={styles.loadingContainer}>
-            <Text style={styles.loadingText}>Loading your journey map...</Text>
           </View>
-        )}
-      </View>
+
+          <View className="bg-gray-50 p-4 rounded-xl mb-4">
+            <Text className="font-semibold mb-2">Sender Information</Text>
+            <Text>Name: {senderInfo?.fullName || senderInfo?.userName}</Text>
+            <Text>Phone: {senderInfo?.phoneNumber}</Text>
+            {senderInfo?.email && (
+              <Text>Email: {senderInfo.email}</Text>
+            )}
+          </View>
+
+          <View className="bg-gray-50 p-4 rounded-xl mb-4">
+            <Text className="font-semibold mb-2">Receiver Information</Text>
+            <Text>Name: {packageDetails?.receiverInfo.name}</Text>
+            <Text>Phone: {packageDetails?.receiverInfo.phoneNumber}</Text>
+            {packageDetails?.receiverInfo.email && (
+              <Text>Email: {packageDetails.receiverInfo.email}</Text>
+            )}
+          </View>
+
+          <View className="bg-gray-50 p-4 rounded-xl mb-4">
+            <Text className="font-semibold mb-2">Travel Details</Text>
+            <Text>Pickup Location: {packageDetails?.packageInfo.pickupLocation.address}</Text>
+            <Text>Delivery Location: {packageDetails?.packageInfo.deliveryLocation.address}</Text>
+            <Text>Travel Medium: {travelData?.travelMedium}</Text>
+            <Text>Price: ${travelData?.price}</Text>
+          </View>
+
+          <CustomButton
+            title="Start Journey"
+            onPress={handleStartJourney}
+            bgVariant="success"
+            className="mt-4"
+          />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -310,16 +416,7 @@ function decodePolyline(t: string) {
 const styles = StyleSheet.create({
   map: {
     width: "100%",
-    height: 400,
-  },
-  loadingContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  loadingText: {
-    fontSize: 16,
-    fontWeight: "500",
+    height: "100%",
   },
   error: {
     flex: 1,
@@ -328,24 +425,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "red",
   },
-  container: {
-    flex: 1,
-    padding: 10,
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-  },
-  sheetContent: {
-    padding: 20,
-    backgroundColor: "#fff",
-  },
-  sheetTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
 });
-
-function setTravelData(data: TravelModel) {
-  throw new Error("Function not implemented.");
-}
