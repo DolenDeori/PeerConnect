@@ -40,7 +40,7 @@ export interface PackageModel {
     deliveryTime?: string;
   };
   price: number;
-  status: string | "pending" | "in transit" | "delivered"; // e.g., "pending", "in transit", "delivered"
+  status: string | "pending" | "in-transit" | "delivered"; // e.g., "pending", "in transit", "delivered"
   createdAt: string; // ISO date string
   updatedAt?: string;
   deliveryFee?: number;

@@ -8,5 +8,6 @@ export interface User {
   phoneNumber?: string;
   userProfile?: string;
   createdAt: string;
+  earnings?: number;
   pushTokens?: string[];
 }

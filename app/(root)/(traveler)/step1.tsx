@@ -28,10 +28,6 @@ const TravellerStep1 = () => {
     (state) => state.updateDestinationLocation
   );
 
-  const setTravelMedium = useTravelerFormStore(
-    (state) => state.setTravelMedium
-  );
-
   const [locLoading, setLocLoading] = useState(false);
   const [locError, setLocError] = useState<string | null>(null);
   const [startLocation, setStartLocation] = useState<string>("");
@@ -257,68 +253,6 @@ const TravellerStep1 = () => {
                 placeholder="Search your location.."
                 handlePress={handleDestinationLocationChange}
               />
-            </View>
-            <View>
-              <Text className="font-HostGorteskMedium mb-2">
-                Select your travel medium
-              </Text>
-              <View className="bg-gray-100 rounded-xl">
-                <RNPickerSelect
-                  onValueChange={(value) => {
-                    setTravelMedium(value);
-                  }}
-                  items={[
-                    { label: "Car", value: "car" },
-                    { label: "Bike", value: "bike" },
-                    { label: "Public Transport", value: "public_transport" },
-                  ]}
-                  placeholder={{
-                    label: "Choose travel medium",
-                    value: null,
-                    color: "#9CA3AF",
-                  }}
-                  style={{
-                    inputIOS: {
-                      fontSize: 16,
-                      paddingVertical: 12,
-                      paddingHorizontal: 16,
-                      borderWidth: 1,
-                      borderColor: "#E5E7EB",
-                      borderRadius: 12,
-                      color: "#1F2937",
-                      backgroundColor: "white",
-                      fontFamily: "DMSansRegular",
-                    },
-                    inputAndroid: {
-                      fontSize: 16,
-                      paddingVertical: 12,
-                      paddingHorizontal: 16,
-                      borderWidth: 1,
-                      borderColor: "#E5E7EB",
-                      borderRadius: 12,
-                      color: "#1F2937",
-                      backgroundColor: "white",
-                      fontFamily: "DMSansRegular",
-                    },
-                    placeholder: {
-                      color: "#9CA3AF",
-                      fontFamily: "DMSansRegular",
-                    },
-                    iconContainer: {
-                      top: 12,
-                      right: 12,
-                    },
-                  }}
-                  useNativeAndroidPickerStyle={false}
-                  Icon={() => {
-                    return (
-                      <View className="mr-2">
-                        <ChevronDown size={20} color="#6B7280" />
-                      </View>
-                    );
-                  }}
-                />
-              </View>
             </View>
           </View>
         </View>

@@ -87,10 +87,11 @@ export const dropdownOptions = {
     { label: "Heavy (10-20 kg)", value: "20" },
   ],
   packageContent: [
-    { label: "Clothes", value: "clothes" },
-    { label: "Electronics", value: "electronics" },
-    { label: "Documents", value: "documents" },
-    { label: "Books", value: "books" },
+    { label: "Clothes", value: "general" },
+    { label: "Electronics", value: "fragile" },
+    { label: "Documents", value: "general" },
+    { label: "Books", value: "general" },
+    { label: "Food", value: "perishable" },
   ],
 };
 

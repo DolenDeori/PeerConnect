@@ -24,7 +24,6 @@ export interface TravelModel {
     state: string;
     zipCode?: string;
   };
-  travelMedium: "car" | "bike" | "public_transport"; // or any other medium
   trackingNumber: string;
   locationUpdates: {
     latitude: number;
