@@ -160,7 +160,7 @@ const Step2 = () => {
                     ]
                   : []
               }
-              keyExtractor={(item) => item.value}
+              keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
                 <View className="py-4">
                   <TouchableOpacity onPress={() => handleSelect(item.label)}>

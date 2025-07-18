@@ -3,14 +3,13 @@ import {
   Text,
   FlatList,
   ActivityIndicator,
-  ScrollView,
   TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useUser } from "@clerk/clerk-expo";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "@/firebaseConfig"; // your Firestore config
-import { PackageModel } from "@/models/packageModel"; // adjust the import path as needed
+import { db } from "@/firebaseConfig";
+import { PackageModel } from "@/models/packageModel";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { TravelModel } from "@/models/travelModel";
@@ -112,7 +111,10 @@ const TrackDeliveris = () => {
         setInTransitPackages(
           packagesWithUserInfo.filter((p) => {
             const matchedTravel = travels.find((t) => t.packageId === p.id);
-            return matchedTravel?.travelStatus === "pending";
+            return (
+              matchedTravel?.travelStatus === "pending" ||
+              matchedTravel?.travelStatus === "in-progress"
+            );
           }) as PackageWithTravelId[]
         );
         setDeliveredPackages(

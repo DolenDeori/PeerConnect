@@ -8,14 +8,24 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
     "ios": {
       "supportsTablet": true
     },
-    "android":
-     {
+    "android": {
       "compileSdkVersion": 35,
       "targetSdkVersion": 35,
       "buildToolsVersion": "35.0.0",
+
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyC74A0kHLwgniNk9iJtne5q3TMOvgmG0Wg"
+        }
+      },
 
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
@@ -30,15 +40,12 @@
     "plugins": [
       "expo-router",
       "expo-dev-client",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
-        }
-      ]
+      "expo-image-picker",
+      "expo-camera",
+      "expo-contacts",
+      "expo-location",
+      "expo-notifications",
+      "expo-sms"
     ],
     "experiments": {
       "typedRoutes": true

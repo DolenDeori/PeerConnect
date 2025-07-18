@@ -2,17 +2,17 @@ export interface KYCInfo {
   userId: string;
   govId: {
     number: string;
-    type: 'passport' | 'driving_license' | 'aadhaar_card';
+    type: "passport" | "driving_license" | "aadhaar_card";
   };
   documentImages: {
-    front: string; // URL to the image
-    back: string;  // URL to the image
+    front: string;
+    back: string;
   };
-  selfieImage: string; // URL to the selfie image
-  status: 'pending' | 'approved' | 'rejected';
+  selfieImage: string;
+  status: "pending" | "approved" | "rejected";
   createdAt: Date;
   updatedAt: Date;
-  verifiedBy?: string; // Admin ID who verified
+  verifiedBy?: string;
   verificationDate?: Date;
   rejectionReason?: string;
 }

@@ -72,26 +72,26 @@ export const onboarding = [
 // Dropdown options
 export const dropdownOptions = {
   packageType: [
-    { label: "Regular Package", value: "regular" },
-    { label: "Express Package", value: "express" },
-    { label: "Fragile Package", value: "fragile" },
+    { id: 1, label: "Regular Package", value: "regular" },
+    { id: 2, label: "Express Package", value: "express" },
+    { id: 3, label: "Fragile Package", value: "fragile" },
   ],
   packageSize: [
-    { label: "Small (up to 30x30x30 cm)", value: "small" },
-    { label: "Medium (up to 50x50x50 cm)", value: "medium" },
-    { label: "Large (up to 100x100x100 cm)", value: "large" },
+    { id: 4, label: "Small (up to 30x30x30 cm)", value: "small" },
+    { id: 5, label: "Medium (up to 50x50x50 cm)", value: "medium" },
+    { id: 6, label: "Large (up to 100x100x100 cm)", value: "large" },
   ],
   packageWeight: [
-    { label: "Light (1-5 kg)", value: "5" },
-    { label: "Medium (5-10 kg)", value: "10" },
-    { label: "Heavy (10-20 kg)", value: "20" },
+    { id: 7, label: "Light (1-5 kg)", value: "5" },
+    { id: 8, label: "Medium (5-10 kg)", value: "10" },
+    { id: 9, label: "Heavy (10-20 kg)", value: "20" },
   ],
   packageContent: [
-    { label: "Clothes", value: "general" },
-    { label: "Electronics", value: "fragile" },
-    { label: "Documents", value: "general" },
-    { label: "Books", value: "general" },
-    { label: "Food", value: "perishable" },
+    { id: 10, label: "Clothes", value: "general" },
+    { id: 11, label: "Electronics", value: "fragile" },
+    { id: 12, label: "Documents", value: "general" },
+    { id: 13, label: "Books", value: "general" },
+    { id: 14, label: "Food", value: "perishable" },
   ],
 };
 

@@ -4,15 +4,14 @@ export type PackageSize = "small" | "medium" | "large";
 export type ContentType = "general" | "fragile" | "perishable";
 
 export interface PriceInput {
-  distanceKm: number; // Required: Distance between pickup and delivery
-  packageSize: PackageSize; // Size category of the package
-  weightKg: number; // Package weight in kilograms
-  contentType: ContentType; // Type of content
+  distanceKm: number; // Required: Distance between pickup 
+  packageSize: PackageSize;
+  weightKg: number;
+  contentType: ContentType;
 }
 
 // Constants for pricing logic
-const BASE_RATE_PER_KM = 8; // Use a fixed base rate for all
-
+const BASE_RATE_PER_KM = 8;
 const SIZE_SURCHARGE: Record<PackageSize, number> = {
   small: 5,
   medium: 20,
